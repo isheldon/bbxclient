@@ -11,7 +11,10 @@ class Frame(wx.Frame):
 	self.bmp.Bind(wx.EVT_LEFT_UP, self.onClick)
 
     def onClick(self, event):
-        os.system("/usr/bin/onboard &")
+	pos = event.GetPosition()
+	if pos.x <= 100 and pos.y <= 100:
+            os.system("/usr/bin/onboard &")
+            os.system("/usr/bin/nm-connection-editor &")
 
 
 class App(wx.App):  
@@ -21,7 +24,7 @@ class App(wx.App):
         self.frame = Frame(image)  
         self.frame.Show()  
         self.frame.ShowFullScreen(True)  
-#        self.SetTopWindow(self.frame)  
+        self.SetTopWindow(self.frame)  
         return True  
 
 def main():  
@@ -29,5 +32,5 @@ def main():
     app.MainLoop()  
 
 if __name__ == '__main__':  
-    main() 
+    main()
 
