@@ -2,22 +2,31 @@
 
 import wx, os
 
+class ImagePanel(wx.Panel):
+    def __init__(self, parent, imagePath, pos=wx.DefaultPosition, size=wx.DefaultSize):
+	wx.Panel.__init__(self, parent, pos=pos, size=size)
+	self.imagePath = imagePath
+	self.size = size
+	self.LoadImage()
+
+    def LoadImage(self):
+        image = wx.Image(self.imagePath, wx.BITMAP_TYPE_JPEG)  
+	image.Rescale(self.size[0], self.size[1])
+        self.bmp = wx.StaticBitmap(parent=self, bitmap=image.ConvertToBitmap())  
+
 class Frame(wx.Frame):
     
     def __init__(self, parent=None):  
         wx.Frame.__init__(self, parent)  
-        self.panel = wx.Panel(self)  
-	self.LoadImage()
-	self.bmp.Bind(wx.EVT_LEFT_UP, self.OnClick)
+        self.panelMain = ImagePanel(self, '/etc/bobox/bobox.jpg', pos=(0, 0), size=(800, 768))  
+	self.panelMain.bmp.Bind(wx.EVT_LEFT_UP, self.OnClick)
 
 	self.timer = wx.Timer(self)
 	self.Bind(wx.EVT_TIMER, self.OnTimer, self.timer)
-	self.timer.Start(1000 * 60 * 5)
+	self.timer.Start(1000 * 10)
 
-    def LoadImage(self):
-        image = wx.Image('/etc/bobox/bobox.jpg', wx.BITMAP_TYPE_JPEG)  
-	image.Rescale(600, 1024)
-        self.bmp = wx.StaticBitmap(parent=self.panel, bitmap=image.ConvertToBitmap())  
+        self.panelQrcode = ImagePanel(self, '/etc/bobox/qrcode.jpg', pos=(800, 0), size=(224, 224))  
+
 
     def OnClick(self, event):
 	pos = event.GetPosition()
@@ -26,7 +35,7 @@ class Frame(wx.Frame):
             os.system("/usr/bin/nm-connection-editor &")
 
     def OnTimer(self, event):
-	self.LoadImage()
+	self.panelMain.LoadImage()
 
 
 class App(wx.App):  
