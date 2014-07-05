@@ -1,0 +1,12 @@
+* install wxPython
+apt-get install python-wxgtk2.8 python-wxtools wx2.8-doc wx2.8-examples wx2.8-headers wx2.8-i18n
+* install gnome
+apt-get install gnome-panel
+
+* auto login
+system tools -> system settings -> user accounts
+
+* startup app
+system tools -> preferences -> startup applications
+
+* one desktop
