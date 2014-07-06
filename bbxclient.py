@@ -18,14 +18,28 @@ class Frame(wx.Frame):
     
     def __init__(self, parent=None):  
         wx.Frame.__init__(self, parent)  
+
+	# main image
         self.panelMain = ImagePanel(self, '/etc/bobox/bobox.jpg', pos=(0, 0), size=(800, 768))  
 	self.panelMain.bmp.Bind(wx.EVT_LEFT_UP, self.OnClick)
 
+	# timer, refresh main image
 	self.timer = wx.Timer(self)
 	self.Bind(wx.EVT_TIMER, self.OnTimer, self.timer)
-	self.timer.Start(1000 * 10)
+	self.timer.Start(1000 * 20)
 
+	# qrcode image
         self.panelQrcode = ImagePanel(self, '/etc/bobox/qrcode.jpg', pos=(800, 0), size=(224, 224))  
+
+	# static text for client code
+	self.clientCodeLabel = wx.StaticText(self, -1, "CLIENT CODE", (820, 300))
+	self.clientCodeLabel.SetFont(wx.Font(18, wx.SWISS, wx.NORMAL, wx.BOLD))
+
+	# client code
+	cCode = "123456"
+	self.clientCode = wx.StaticText(self, -1, cCode, (820, 350))
+	self.clientCode.SetFont(wx.Font(18, wx.SWISS, wx.NORMAL, wx.BOLD))
+	self.clientCode.SetForegroundColour(wx.RED)
 
 
     def OnClick(self, event):
@@ -51,5 +65,5 @@ def main():
     app.MainLoop()  
 
 if __name__ == '__main__':  
-    main()
+    main() 
 
