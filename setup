@@ -9,4 +9,7 @@ system tools -> system settings -> user accounts
 * startup app
 system tools -> preferences -> startup applications
 
+* booting text
+/lib/plymouth/themes/ubuntu-text/ubuntu-text.plymouth
+
 * one desktop
