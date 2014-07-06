@@ -12,4 +12,7 @@ system tools -> preferences -> startup applications
 * booting text
 /lib/plymouth/themes/ubuntu-text/ubuntu-text.plymouth
 
+* sudo without password
+ALL=(ALL) NOPASSWD: ALL
+
 * one desktop
