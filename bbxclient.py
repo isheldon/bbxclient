@@ -14,6 +14,13 @@ class ImagePanel(wx.Panel):
 	image.Rescale(self.size[0], self.size[1])
         self.bmp = wx.StaticBitmap(parent=self, bitmap=image.ConvertToBitmap())  
 
+class OffDialog(wx.Dialog):
+    def __init__(self):
+        wx.Dialog.__init__(self, None, -1, 'Are you sure to power off?', size=(300, 50))
+        okButton = wx.Button(self, wx.ID_OK, "OK", pos=(15, 15))
+        okButton.SetDefault()
+        cancelButton = wx.Button(self, wx.ID_CANCEL, "Cancel", pos=(115, 15))
+
 class Frame(wx.Frame):
     
     def __init__(self, parent=None):  
@@ -47,6 +54,12 @@ class Frame(wx.Frame):
 	if pos.x <= 100 and pos.y <= 100:
             os.system("/usr/bin/onboard &")
             os.system("/usr/bin/nm-connection-editor &")
+	if pos.x <= 50 and pos.y >= 718:
+	    dialog = OffDialog()
+            result = dialog.ShowModal()
+            dialog.Destroy()
+            if result == wx.ID_OK:
+                os.system("sudo halt -p")
 
     def OnTimer(self, event):
 	self.panelMain.LoadImage()
