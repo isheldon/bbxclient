@@ -2,6 +2,9 @@
 apt-get install python-wxgtk2.8 python-wxtools wx2.8-doc wx2.8-examples wx2.8-headers wx2.8-i18n
 * install gnome
 apt-get install gnome-panel
+* install python pip and requests
+apt-get install python-pip
+pip install requests
 
 * auto login
 system tools -> system settings -> user accounts
