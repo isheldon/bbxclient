@@ -5,6 +5,8 @@ apt-get install gnome-panel
 * install python pip and requests
 apt-get install python-pip
 pip install requests
+* install memcached
+apt-get install memcached python-memcache
 
 * auto login
 system tools -> system settings -> user accounts
