@@ -44,6 +44,7 @@ class Frame(wx.Frame):
 
 	# qrcode image
         self.panelQrcode = ImagePanel(self, '/etc/bobox/qrcode.jpg', pos=(800, 0), size=(224, 224))  
+	self.qrcodeCache = memcache.Client(['127.0.0.1:11211'], debug=0)
 
 	# timer, refresh qrcode
 	self.qctimer = wx.Timer(self)
@@ -54,17 +55,23 @@ class Frame(wx.Frame):
 	self.clientCodeLabel = wx.StaticText(self, -1, "CLIENT CODE", (820, 300))
 	self.clientCodeLabel.SetFont(wx.Font(18, wx.SWISS, wx.NORMAL, wx.BOLD))
 
-	# client code
+	# consumer code
 	self.cctimer = wx.Timer(self)
 	self.Bind(wx.EVT_TIMER, self.OnConsumerCodeTimer, self.cctimer)
 	self.cctimer.Start(1000 * 5)
+	self.concode = ""
 	#self.showConsumerCode()
 
     def showConsumerCode(self):
-	cCode = "123456"
-	self.clientCode = wx.StaticText(self, -1, cCode, (820, 350))
-	self.clientCode.SetFont(wx.Font(18, wx.SWISS, wx.NORMAL, wx.BOLD))
-	self.clientCode.SetForegroundColour(wx.RED)
+	self.clientCode = wx.StaticText(self, -1, self.concode, (820, 350))
+	self.clientCode.SetFont(wx.Font(22, wx.SWISS, wx.NORMAL, wx.BOLD))
+	self.clientCode.SetForegroundColour(wx.WHITE)
+	cCode = self.qrcodeCache.get('ConsumerCode')
+        if cCode != None:
+	    self.concode = cCode
+	    self.clientCode = wx.StaticText(self, -1, cCode, (820, 350))
+	    self.clientCode.SetFont(wx.Font(22, wx.SWISS, wx.NORMAL, wx.BOLD))
+	    self.clientCode.SetForegroundColour(wx.RED)
 
 
     def OnClick(self, event):
