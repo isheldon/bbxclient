@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import wx, os
+import wx, os, memcache, time
 
 class ImagePanel(wx.Panel):
     def __init__(self, parent, imagePath, pos=wx.DefaultPosition, size=wx.DefaultSize):
@@ -11,6 +11,11 @@ class ImagePanel(wx.Panel):
 
     def LoadImage(self):
         image = wx.Image(self.imagePath, wx.BITMAP_TYPE_JPEG)  
+	image.Rescale(self.size[0], self.size[1])
+        self.bmp = wx.StaticBitmap(parent=self, bitmap=image.ConvertToBitmap())  
+
+    def LoadSpecImage(self, imagePath):
+        image = wx.Image(imagePath, wx.BITMAP_TYPE_JPEG)  
 	image.Rescale(self.size[0], self.size[1])
         self.bmp = wx.StaticBitmap(parent=self, bitmap=image.ConvertToBitmap())  
 
@@ -29,20 +34,33 @@ class Frame(wx.Frame):
 	# main image
         self.panelMain = ImagePanel(self, '/etc/bobox/bobox.jpg', pos=(0, 0), size=(800, 768))  
 	self.panelMain.bmp.Bind(wx.EVT_LEFT_UP, self.OnClick)
+	self.logoPics = []
+	self.lastLogo = -1
 
 	# timer, refresh main image
 	self.timer = wx.Timer(self)
 	self.Bind(wx.EVT_TIMER, self.OnTimer, self.timer)
-	self.timer.Start(1000 * 20)
+	self.timer.Start(1000 * 30)
 
 	# qrcode image
         self.panelQrcode = ImagePanel(self, '/etc/bobox/qrcode.jpg', pos=(800, 0), size=(224, 224))  
 
-	# static text for client code
+	# timer, refresh qrcode
+	self.qctimer = wx.Timer(self)
+	self.Bind(wx.EVT_TIMER, self.OnQrCodeTimer, self.qctimer)
+	self.qctimer.Start(1000 * 60)
+
+	# static text for consumer code
 	self.clientCodeLabel = wx.StaticText(self, -1, "CLIENT CODE", (820, 300))
 	self.clientCodeLabel.SetFont(wx.Font(18, wx.SWISS, wx.NORMAL, wx.BOLD))
 
 	# client code
+	self.cctimer = wx.Timer(self)
+	self.Bind(wx.EVT_TIMER, self.OnConsumerCodeTimer, self.cctimer)
+	self.cctimer.Start(1000 * 5)
+	#self.showConsumerCode()
+
+    def showConsumerCode(self):
 	cCode = "123456"
 	self.clientCode = wx.StaticText(self, -1, cCode, (820, 350))
 	self.clientCode.SetFont(wx.Font(18, wx.SWISS, wx.NORMAL, wx.BOLD))
@@ -62,7 +80,27 @@ class Frame(wx.Frame):
                 os.system("sudo halt -p")
 
     def OnTimer(self, event):
-	self.panelMain.LoadImage()
+        logos = os.listdir("/etc/bobox/logos/")
+	if len(logos) == 0: # empty folder, display the defautl picture
+	    self.panelMain.LoadImage()
+	    self.logoPics = []
+	    self.lastLogo = -1
+        else: 
+	    if self.logoPics == logos:  # means pictures not changed
+                self.lastLogo = self.lastLogo + 1 # to display next picture
+                if self.lastLogo >= len(logos): # need to start from the firt one
+                    self.lastLogo = 0
+	    else: # means pictures changed
+                self.logoPics = logos
+                self.lastLogo = 0 # to display the first one
+	    self.panelMain.LoadSpecImage('/etc/bobox/logos/' + logos[self.lastLogo])
+
+    def OnQrCodeTimer(self, event):
+	self.panelQrcode.LoadImage()
+
+    def OnConsumerCodeTimer(self, event):
+	self.showConsumerCode()
+
 
 
 class App(wx.App):  
