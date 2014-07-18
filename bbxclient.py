@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 import wx, os, memcache, time
 
@@ -32,7 +33,7 @@ class Frame(wx.Frame):
         wx.Frame.__init__(self, parent)  
 
 	# main image
-        self.panelMain = ImagePanel(self, '/etc/bobox/bobox.jpg', pos=(0, 0), size=(800, 768))  
+        self.panelMain = ImagePanel(self, '/etc/bobox/bobox.jpg', pos=(0, 0), size=(600, 768))  
 	self.panelMain.bmp.Bind(wx.EVT_LEFT_UP, self.OnClick)
 	self.logoPics = []
 	self.lastLogo = -1
@@ -40,7 +41,7 @@ class Frame(wx.Frame):
 	# timer, refresh main image
 	self.timer = wx.Timer(self)
 	self.Bind(wx.EVT_TIMER, self.OnTimer, self.timer)
-	self.timer.Start(1000 * 30)
+	self.timer.Start(1000 * 10)
 
 	# qrcode image
         self.panelQrcode = ImagePanel(self, '/etc/bobox/qrcode.jpg', pos=(800, 0), size=(224, 224))  
@@ -52,23 +53,21 @@ class Frame(wx.Frame):
 	self.qctimer.Start(1000 * 60)
 
 	# static text for consumer code
-	self.clientCodeLabel = wx.StaticText(self, -1, "CLIENT CODE", (820, 300))
-	self.clientCodeLabel.SetFont(wx.Font(18, wx.SWISS, wx.NORMAL, wx.BOLD))
+	self.clientCodeLabel = wx.StaticText(self, -1, "消费码:", (820, 300))
+	self.clientCodeLabel.SetFont(wx.Font(24, wx.SWISS, wx.NORMAL, wx.BOLD))
 
 	# consumer code
 	self.cctimer = wx.Timer(self)
 	self.Bind(wx.EVT_TIMER, self.OnConsumerCodeTimer, self.cctimer)
 	self.cctimer.Start(1000 * 5)
-	self.concode = ""
 	#self.showConsumerCode()
 
     def showConsumerCode(self):
-	self.clientCode = wx.StaticText(self, -1, self.concode, (820, 350))
+	self.clientCode = wx.StaticText(self, -1, "████", (820, 350))
 	self.clientCode.SetFont(wx.Font(22, wx.SWISS, wx.NORMAL, wx.BOLD))
 	self.clientCode.SetForegroundColour(wx.WHITE)
 	cCode = self.qrcodeCache.get('ConsumerCode')
         if cCode != None:
-	    self.concode = cCode
 	    self.clientCode = wx.StaticText(self, -1, cCode, (820, 350))
 	    self.clientCode.SetFont(wx.Font(22, wx.SWISS, wx.NORMAL, wx.BOLD))
 	    self.clientCode.SetForegroundColour(wx.RED)
