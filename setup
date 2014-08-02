@@ -8,6 +8,9 @@ pip install requests
 * install memcached
 apt-get install memcached python-memcache
 
+* webkit
+apt-get install python-webkit
+
 * auto login
 system tools -> system settings -> user accounts
 
