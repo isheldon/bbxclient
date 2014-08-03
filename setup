@@ -21,6 +21,17 @@ system tools -> preferences -> startup applications
 /lib/plymouth/themes/ubuntu-text/ubuntu-text.plymouth
 
 * sudo without password
-ALL=(ALL) NOPASSWD: ALL
+lomotime ALL=(ALL) NOPASSWD: ALL
 
-* one desktop
+* no auto upgrade
+
+* wlan0 config
+vi /etc/modprobe.d/iwlwifi.conf
+	options iwlwifi 11n_disable=1
+
+* wifi manager
+apt get install wicd-gtk
+# need to turn off the built-in network manager
+
+* brightness and lock
+no lock
