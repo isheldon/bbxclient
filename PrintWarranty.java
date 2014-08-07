@@ -58,7 +58,7 @@ public class PrintWarranty   implements Printable{
    }
 
 
-public static void main(String[] args) {
+  public static void main(String[] args) {
     //    通俗理解就是书、文档
     Book book = new Book();
     //    设置成竖打
@@ -83,7 +83,7 @@ public static void main(String[] args) {
          e.printStackTrace();
      }
 	
-}	
+  }
 	
    }
 
