@@ -11,6 +11,11 @@ apt-get install memcached python-memcache
 * webkit
 apt-get install python-webkit
 
+* mysql client
+apt-get install mysql-client libmysqlclient-dev
+apt-get install python-dev python-setuptools
+easy_install mysql-python
+
 * auto login
 system tools -> system settings -> user accounts
 
