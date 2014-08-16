@@ -1,0 +1,14 @@
+machine_id=SA12345
+img_base_url=http://x.x.x.x:8080/uploadImg/img/
+db_host=x.x.x.x
+db_usr=foo
+db_pwd=bar
+db_name=lomo
+db_port=3306
+info_url=http://www.lomotime.cn/admin/mims/reg.do
+print_interval=5
+consumer_code_interval=2
+check_url=http://www.lomotime.cn/
+local_url=file:///home/sheldon/ltpage/8.html
+remote_url=http://www.lomotime.cn/
+html_refresh_interval=60
