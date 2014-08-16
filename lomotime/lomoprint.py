@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import MySQLdb, os, subprocess
+import MySQLdb, os, subprocess, time
 
-idfile = open('/etc/bobox/device_id', "r")
+idfile = open('/etc/lomotime/machine_id', "r")
 try:
     machine_id = idfile.read().rstrip('\n')
 finally:
@@ -11,6 +11,7 @@ finally:
 
 base_imgurl = "http://122.225.105.20:8080/uploadImg/img/"
 printing_img = "/tmp/lomoprinting.jpg"
+rm_printimg_cmd = "rm -f /tmp/lomoprinting.jpg"
 sel_sql = "select id, pic_path from weixin where machine_id = %s and consumer_code is not null and is_printed = 2"
 upd_sql = "update weixin set is_printed = 1 where id = %s"
 
@@ -25,7 +26,7 @@ while True:
   
     cur=conn.cursor()
     # query pictures to be printed
-    cur.execute(sel_sql, machine_id)
+    cur.execute(sel_sql, [machine_id])
     rows = cur.fetchall()
     # print each picture
     for row in rows:
@@ -39,9 +40,12 @@ while True:
         print_cmd = "java PrintImg " + printing_img
         print_result = subprocess.check_output(print_cmd, shell = True)
         if print_result == "0": # successfully printed
-        cur.execute(upd_sql, str(row_id))
+          cur.execute(upd_sql, [str(row_id)])
+    os.system(rm_printimg_cmd)
     cur.close()
-  except MySQLdb.Error, e:
+  except Exception, e:
     print e
+    os.system(rm_printimg_cmd)
+  time.sleep(5)
 # end wihle
 

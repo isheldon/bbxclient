@@ -16,7 +16,7 @@ class CodePanel(wx.Panel):
     # consumer code
     self.cctimer = wx.Timer(self)
     self.Bind(wx.EVT_TIMER, self.OnConsumerCodeTimer, self.cctimer)
-    self.cctimer.Start(1000 * 2)
+    self.cctimer.Start(1000)
 
   def showConsumerCode(self):
     self.clientCode = wx.StaticText(self, -1, "████", (100, 10))
