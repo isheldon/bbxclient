@@ -50,3 +50,15 @@ def print_interval():
 def consumer_code_interval():
   return int(inst().getProp("consumer_code_interval"))
 
+def check_url():
+  return inst().getProp("check_url")
+
+def local_url():
+  return inst().getProp("local_url")
+
+def remote_url():
+  return inst().getProp("remote_url")
+
+def html_refresh_interval():
+  return int(inst().getProp("html_refresh_interval"))
+
