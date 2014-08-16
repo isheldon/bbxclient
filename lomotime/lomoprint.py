@@ -2,13 +2,9 @@
 # -*- coding: utf-8 -*-
 
 import MySQLdb, os, subprocess, time
+import lomoconf
 
-idfile = open('/etc/lomotime/machine_id', "r")
-try:
-    machine_id = idfile.read().rstrip('\n')
-finally:
-    idfile.close()
-
+machine_id = lomoconf.machine_id()
 base_imgurl = "http://122.225.105.20:8080/uploadImg/img/"
 printing_img = "/tmp/lomoprinting.jpg"
 rm_printimg_cmd = "rm -f /tmp/lomoprinting.jpg"
@@ -28,6 +24,7 @@ while True:
     # query pictures to be printed
     cur.execute(sel_sql, [machine_id])
     rows = cur.fetchall()
+    # print len(rows)
     # print each picture
     for row in rows:
       row_id = row[0] # row id, for later use after printing
