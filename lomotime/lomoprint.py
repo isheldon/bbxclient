@@ -11,7 +11,8 @@ db_host = lomoconf.db_host()
 db_usr = lomoconf.db_usr()
 db_pwd = lomoconf.db_pwd()
 db_name = lomoconf.db_name()
-db_port = int(lomoconf.db_port())
+db_port = lomoconf.db_port()
+wait_sec = lomoconf.print_interval()
 
 printing_img = "/tmp/lomoprinting.jpg"
 rm_printimg_cmd = "rm -f /tmp/lomoprinting.jpg"
@@ -50,6 +51,6 @@ while True:
   except Exception, e:
     print e
     os.system(rm_printimg_cmd)
-  time.sleep(5)
+  time.sleep(wait_sec)
 # end wihle
 

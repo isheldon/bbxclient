@@ -39,8 +39,14 @@ def db_name():
   return inst().getProp("db_name")
   
 def db_port():
-  return inst().getProp("db_port")
+  return int(inst().getProp("db_port"))
 
 def info_url():
   return inst().getProp("info_url")
+
+def print_interval():
+  return int(inst().getProp("print_interval"))
+
+def consumer_code_interval():
+  return int(inst().getProp("consumer_code_interval"))
 

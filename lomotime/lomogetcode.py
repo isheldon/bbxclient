@@ -3,8 +3,9 @@
 import memcache, requests, time
 import lomoconf
 
+# read from config file
 machine_id = lomoconf.machine_id()
-
+wait_sec = lomoconf.consumer_code_interval()
 info_url = lomoconf.info_url()
 args = {"method": "getMachineConsumerCode", "machineCode": machine_id}
 
@@ -18,5 +19,5 @@ def get_consumer_code():
 
 while True:
     get_consumer_code()
-    time.sleep(2)
+    time.sleep(wait_sec)
 
