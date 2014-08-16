@@ -2,19 +2,31 @@
 # -*- coding: utf-8 -*-
 
 import wx, lomohtml, lomoimg, os
+import lomohtml, lomoimg, lomocode
+import os
 
 class Frame(wx.Frame):
   def __init__(self):
     wx.Frame.__init__(self, None)
     self.Show()
     self.ShowFullScreen(True)
+
+    # HTML page
     lomohtml.HtmlPanel(self, pos = (0, 0), size = (1700, 1080))
+
+    # background image
     self.bgrImg = lomoimg.ImagePanel(self,
          pos = (1700, 0), size = (210, 1080), imagePath = "/etc/lomotime/default/background.jpg")
+
+    # QR code image
     self.qrCodeImg = lomoimg.ImagePanel(self,
          pos = (1725, 300), size = (150, 150), imagePath = "/etc/lomotime/default/qrcode.jpg")
     self.qrCodeImg.SetTimerInterval(60)
 
+    # consumer code
+    self.consumerCode = lomocode.CodePanel(self, pos = (1710, 500), size = (200, 50))
+
+    # current printing image
     self.printingImg = lomoimg.ImagePanel(self,
          pos = (1700, 830), size = (210, 210), imagePath = "/tmp/printing.jpg", defaultImage = "/etc/lomotime/default/printing.jpg")
     self.printingImg.SetTimerInterval(2)
