@@ -41,3 +41,6 @@ def db_name():
 def db_port():
   return inst().getProp("db_port")
 
+def info_url():
+  return inst().getProp("info_url")
+
