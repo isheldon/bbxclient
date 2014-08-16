@@ -9,8 +9,16 @@ class Frame(wx.Frame):
     self.Show()
     self.ShowFullScreen(True)
     lomohtml.HtmlPanel(self, pos = (0, 0), size = (1700, 1080))
-    lomoimg.ImagePanel(self, pos = (1700, 0), size = (210, 1080), imagePath = "/etc/bobox/bobox.jpg")
-    lomoimg.ImagePanel(self, pos = (1700, 880), size = (210, 200), imagePath = "/etc/bobox/bobox.jpg")
+    self.bgrImg = lomoimg.ImagePanel(self,
+         pos = (1700, 0), size = (210, 1080), imagePath = "/etc/lomotime/default/background.jpg")
+    self.qrCodeImg = lomoimg.ImagePanel(self,
+         pos = (1725, 300), size = (150, 150), imagePath = "/etc/lomotime/default/qrcode.jpg")
+    self.qrCodeImg.SetTimerInterval(60)
+
+    self.printingImg = lomoimg.ImagePanel(self,
+         pos = (1700, 830), size = (210, 210), imagePath = "/etc/lomotime/default/printing.jpg")
+    self.printingGif = lomoimg.AnimatePanel(self,
+        pos = (1700, 1030), size = (210, 50), gifPath = "/etc/lomotime/default/printing.gif")
 
     # call soft board and network config
     self.Bind(wx.EVT_LEFT_UP, self.OnClick)
