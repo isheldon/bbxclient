@@ -4,8 +4,15 @@
 import MySQLdb, os, subprocess, time
 import lomoconf
 
+# read from config file
 machine_id = lomoconf.machine_id()
-base_imgurl = "http://122.225.105.20:8080/uploadImg/img/"
+base_imgurl = lomoconf.img_base_url()
+db_host = lomoconf.db_host()
+db_usr = lomoconf.db_usr()
+db_pwd = lomoconf.db_pwd()
+db_name = lomoconf.db_name()
+db_port = int(lomoconf.db_port())
+
 printing_img = "/tmp/lomoprinting.jpg"
 rm_printimg_cmd = "rm -f /tmp/lomoprinting.jpg"
 sel_sql = "select id, pic_path from weixin where machine_id = %s and consumer_code is not null and is_printed = 2"
@@ -18,7 +25,7 @@ while True:
   try:
     # connect db for the first time
     if conn == None:
-      conn=MySQLdb.connect(host='122.225.105.22',user='heavenzyw',passwd='ywzywwei2008',db='lomo',port=3306)
+      conn=MySQLdb.connect(host=db_host, user=db_usr, passwd=db_pwd, db=db_name, port=db_port)
   
     cur=conn.cursor()
     # query pictures to be printed

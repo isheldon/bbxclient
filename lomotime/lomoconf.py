@@ -22,3 +22,22 @@ def inst():
 
 def machine_id():
   return inst().getProp("machine_id")
+
+def img_base_url():
+  return inst().getProp("img_base_url")
+  
+def db_host():
+  return inst().getProp("db_host")
+  
+def db_usr():
+  return inst().getProp("db_usr")
+  
+def db_pwd():
+  return inst().getProp("db_pwd")
+  
+def db_name():
+  return inst().getProp("db_name")
+  
+def db_port():
+  return inst().getProp("db_port")
+
