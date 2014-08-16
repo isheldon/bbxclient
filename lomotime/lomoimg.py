@@ -48,7 +48,7 @@ class AnimatePanel(wx.Panel):
     wx.Panel.__init__(self, parent, pos = pos, size = size)
     self.SetBackgroundColour("white")
     gif_fname = gifPath
-    gif = wx.animate.GIFAnimationCtrl(self, id, gif_fname)
+    gif = wx.animate.GIFAnimationCtrl(self, id, gif_fname, pos=(-20, 0))
     gif.GetPlayer().UseBackgroundColour(True)
     self.gif = gif
     self.playing = False;
