@@ -16,9 +16,11 @@ class Frame(wx.Frame):
     self.qrCodeImg.SetTimerInterval(60)
 
     self.printingImg = lomoimg.ImagePanel(self,
-         pos = (1700, 830), size = (210, 210), imagePath = "/etc/lomotime/default/printing.jpg")
+         pos = (1700, 830), size = (210, 210), imagePath = "/tmp/printing.jpg", defaultImage = "/etc/lomotime/default/printing.jpg")
+    self.printingImg.SetTimerInterval(2)
     self.printingGif = lomoimg.AnimatePanel(self,
         pos = (1700, 1030), size = (210, 50), gifPath = "/etc/lomotime/default/printing.gif")
+    self.printingImg.SetAnimate(self.printingGif)
 
     # call soft board and network config
     self.Bind(wx.EVT_LEFT_UP, self.OnClick)
