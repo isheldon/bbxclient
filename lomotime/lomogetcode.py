@@ -7,7 +7,7 @@ import lomoconf
 machine_id = lomoconf.machine_id()
 wait_sec = lomoconf.consumer_code_interval()
 info_url = lomoconf.info_url()
-args = {"method": "getMachineConsumerCode", "machineCode": machine_id}
+args = {"method": "getMachineConsumerCode", "mechineCode": machine_id}
 
 shared = memcache.Client(['127.0.0.1:11211'], debug=0)
 
@@ -18,6 +18,9 @@ def get_consumer_code():
         # print req.text
 
 while True:
-    get_consumer_code()
+    try:
+        get_consumer_code()
+    except Exception, e:
+        shared.set('ConsumerCode', '')
     time.sleep(wait_sec)
 

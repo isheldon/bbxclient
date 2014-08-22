@@ -11,27 +11,35 @@ class Frame(wx.Frame):
     self.Show()
     self.ShowFullScreen(True)
 
-    # HTML page
-    lomohtml.HtmlPanel(self, pos = (0, 0), size = (1700, 1080))
+    # HTML page, size: 1350*1080
+    lomohtml.HtmlPanel(self, pos = (0, 0), size = (1350, 1080))
 
-    # background image
+    # background image, size: (1910-1350=560)*1080
     self.bgrImg = lomoimg.ImagePanel(self,
-         pos = (1700, 0), size = (210, 1080), imagePath = "/etc/lomotime/default/background.jpg")
+         pos = (1350, 0), size = (560, 1080),
+         imagePath = "/etc/lomotime/background.jpg",
+         defaultImage = "/etc/lomotime/default/background.jpg")
 
-    # QR code image
+    # QR code image, pos: (1680, 450)
     self.qrCodeImg = lomoimg.ImagePanel(self,
-         pos = (1725, 300), size = (150, 150), imagePath = "/etc/lomotime/default/qrcode.jpg")
+         pos = (1680, 450), size = (200, 200),
+         imagePath = "/etc/lomotime/qrcode.jpg",
+         defaultImage = "/etc/lomotime/default/qrcode.jpg")
     self.qrCodeImg.SetTimerInterval(60)
 
-    # consumer code
-    self.consumerCode = lomocode.CodePanel(self, pos = (1710, 500), size = (200, 50))
+    # consumer code, pos: (1680, 450+200=650)
+    self.consumerCode = lomocode.CodePanel(self, pos = (1680, 650), size = (200, 50))
 
-    # current printing image
+    # current printing image, pos: (1380, 440)
     self.printingImg = lomoimg.ImagePanel(self,
-        pos = (1700, 830), size = (210, 210), imagePath = "/tmp/lomoprinting.jpg", defaultImage = "/etc/lomotime/default/printing.jpg")
+        pos = (1380, 440), size = (240, 240), 
+        imagePath = "/tmp/lomoprinting.jpg",
+        defaultImage = "/etc/lomotime/default/printing.jpg")
     self.printingImg.SetTimerInterval(2)
+    # printing indicator, pos: (1380, 430+250=680)
     self.printingGif = lomoimg.AnimatePanel(self,
-        pos = (1700, 1030), size = (210, 20), gifPath = "/etc/lomotime/default/printing.gif")
+        pos = (1380, 680), size = (240, 20),
+        gifPath = "/etc/lomotime/default/printing.gif")
     self.printingImg.SetAnimate(self.printingGif)
 
     # call soft board and network config

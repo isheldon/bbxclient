@@ -56,7 +56,8 @@ class HtmlPanel(wx.Panel):
     # read from config file 
     self.checkUrl = lomoconf.check_url()
     self.localUrl = lomoconf.local_url()
-    self.remoteUrl = lomoconf.remote_url()
+    self.remoteUrl = lomoconf.remote_url() + "&machineCode=" + lomoconf.machine_id()
+    # print self.remoteUrl
 
     self.html = HtmlWindow(self, pos=pos, size=size)
     self.html.SetEditable(False)

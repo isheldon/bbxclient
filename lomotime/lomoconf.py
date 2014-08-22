@@ -6,6 +6,8 @@ class LomoConfig:
     for line in prop_file:
       if line.find('=') > 0:
         strs = line.replace('\n', '').split('=')
+        if strs[1].find('@@') > 0:
+          strs[1] = strs[1].replace("@@", "=")
         self.props[strs[0]] = strs[1]
     prop_file.close()
 
