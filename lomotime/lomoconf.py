@@ -2,14 +2,23 @@ class LomoConfig:
 
   def __init__(self):
     prop_file = open("/etc/lomotime/config", 'r')
-    self.props = {}
-    for line in prop_file:
-      if line.find('=') > 0:
-        strs = line.replace('\n', '').split('=')
-        if strs[1].find('@@') > 0:
-          strs[1] = strs[1].replace("@@", "=")
-        self.props[strs[0]] = strs[1]
-    prop_file.close()
+    try:
+      self.props = {}
+      for line in prop_file:
+        if line.find('=') > 0:
+          strs = line.replace('\n', '').split('=')
+          if strs[1].find('@@') > 0:
+            strs[1] = strs[1].replace("@@", "=")
+          self.props[strs[0]] = strs[1]
+    finally:
+      prop_file.close()
+
+    idfile = open('/etc/lomotime/machineid', "r")
+    try:
+      device_id = idfile.read().rstrip('\n')
+      self.props["machine_id"] = device_id
+    finally:
+      idfile.close()
 
   def getProp(self, key):
     return self.props[key]
