@@ -13,6 +13,7 @@ db_pwd = lomoconf.db_pwd()
 db_name = lomoconf.db_name()
 db_port = lomoconf.db_port()
 wait_sec = lomoconf.print_interval()
+pr_wait_sec = lomoconf.current_print_interval()
 
 printing_img = "/tmp/lomoprinting.jpg"
 rm_printimg_cmd = "rm -f /tmp/lomoprinting.jpg"
@@ -51,7 +52,7 @@ while True:
         # print "print result: " + print_result
         if print_result == "0": # successfully printed
           cur.execute(upd_sql, [str(row_id)])
-        time.sleep(wait_sec)
+        time.sleep(pr_wait_sec)
     os.system(rm_printimg_cmd)
     cur.close()
   except Exception, e:

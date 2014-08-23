@@ -64,3 +64,12 @@ def remote_url():
 def html_refresh_interval():
   return int(inst().getProp("html_refresh_interval"))
 
+def backgroupd_interval():
+  return int(inst().getProp("backgroupd_interval"))
+
+def current_print_interval():
+  return int(inst().getProp("current_print_interval"))
+
+def qrcode_interval():
+  return int(inst().getProp("qrcode_interval"))
+

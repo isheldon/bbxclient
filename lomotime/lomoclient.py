@@ -1,9 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import wx, lomohtml, lomoimg, os
-import lomohtml, lomoimg, lomocode
-import os
+import wx, os
+import lomohtml, lomoimg, lomocode, lomoconf
 
 class Frame(wx.Frame):
   def __init__(self):
@@ -19,13 +18,14 @@ class Frame(wx.Frame):
          pos = (1350, 0), size = (560, 1080),
          imagePath = "/etc/lomotime/background.jpg",
          defaultImage = "/etc/lomotime/default/background.jpg")
+    self.bgrImg.SetTimerInterval(lomoconf.backgroupd_interval())
 
     # QR code image, pos: (1680, 450)
     self.qrCodeImg = lomoimg.ImagePanel(self,
          pos = (1680, 450), size = (200, 200),
          imagePath = "/etc/lomotime/qrcode.jpg",
          defaultImage = "/etc/lomotime/default/qrcode.jpg")
-    self.qrCodeImg.SetTimerInterval(60)
+    self.qrCodeImg.SetTimerInterval(lomoconf.qrcode_interval())
 
     # consumer code, pos: (1680, 450+200=650)
     self.consumerCode = lomocode.CodePanel(self, pos = (1680, 650), size = (200, 50))
@@ -35,7 +35,7 @@ class Frame(wx.Frame):
         pos = (1380, 440), size = (240, 240), 
         imagePath = "/tmp/lomoprinting.jpg",
         defaultImage = "/etc/lomotime/default/printing.jpg")
-    self.printingImg.SetTimerInterval(2)
+    self.printingImg.SetTimerInterval(lomoconf.current_print_interval())
     # printing indicator, pos: (1380, 430+250=680)
     self.printingGif = lomoimg.AnimatePanel(self,
         pos = (1380, 680), size = (240, 20),
