@@ -30,15 +30,15 @@ class Frame(wx.Frame):
     # consumer code, pos: (1680, 450+200=650)
     self.consumerCode = lomocode.CodePanel(self, pos = (1680, 650), size = (200, 50))
 
-    # current printing image, pos: (1380, 440)
+    # current printing image, pos: (1400, 400)
     self.printingImg = lomoimg.ImagePanel(self,
-        pos = (1380, 440), size = (240, 240), 
+        pos = (1400, 400), size = (210, 280), 
         imagePath = "/tmp/lomoprinting.jpg",
         defaultImage = "/etc/lomotime/default/printing.jpg")
     self.printingImg.SetTimerInterval(lomoconf.current_print_interval())
-    # printing indicator, pos: (1380, 430+250=680)
+    # printing indicator, pos: (1400, 400+280=680)
     self.printingGif = lomoimg.AnimatePanel(self,
-        pos = (1380, 680), size = (240, 20),
+        pos = (1400, 680), size = (210, 20),
         gifPath = "/etc/lomotime/default/printing.gif")
     self.printingImg.SetAnimate(self.printingGif)
 
