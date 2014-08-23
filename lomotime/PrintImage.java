@@ -1,5 +1,3 @@
-package printutil;
-
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
@@ -66,7 +64,7 @@ public class PrintImage {
 	/*
 	 * 新图片位置
 	 */
-	public static String imagePath = "f:/999.";
+	public static String imagePath = "/tmp/999.";
 	
 	/*
 	 * 图片格式的枚举
@@ -292,20 +290,22 @@ public class PrintImage {
 		
 	}
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) { //arg0: image path, arg1: words
 		try {
 			int cutLength = 640;
 			int cutX = 0;
 			int cutY = 0;
-			WordPrinted pw = new WordPrinted();
-//			WordPrinted pw = new WordPrinted(cutLength);
-			pw.setFontColor(new Color(0, 153, 0));
-			pw.setWord("好雨知时节，当春乃发生。");
+			WordPrinted pw = null;
+			if (args.length > 1) {
+				pw = new WordPrinted();
+				pw.setFontColor(new Color(0, 153, 0));
+				pw.setWord(args[1]);
+			}
 			
-			PrintImage pi = new PrintImage(cutX, cutY, cutLength, pw, ImageIO.read(new FileInputStream("f:/777.jpg")));
-//			PrintImage pi = new PrintImage(cutX, cutY, cutLength, pw, null);
+			PrintImage pi = new PrintImage(cutX, cutY, cutLength, pw, null);
 			pi.setBgColor(new Color(153, 102, 102));
-			pi.print(new FileInputStream("f:/444.jpg"), ImageFormatter.JPEG);
+			int result = pi.print(new FileInputStream(args[0]), ImageFormatter.JPEG);
+			System.out.print(result);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
