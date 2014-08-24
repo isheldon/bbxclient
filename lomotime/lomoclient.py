@@ -49,7 +49,7 @@ class Frame(wx.Frame):
     pos = event.GetPosition()
     if pos.x >= 1911 and pos.y <= 100:
       os.system("/usr/bin/onboard &")
-      os.system("/usr/bin/nm-connection-editor &")
+      os.system("/usr/bin/wicd-gtk &")
     if pos.x >= 1911 and pos.y >= 980:
       dialog = OffDialog()
       result = dialog.ShowModal()
