@@ -6,7 +6,7 @@ import lomoconf
 
 # read from config file
 machine_id = lomoconf.machine_id()
-base_imgurl = lomoconf.img_base_url()
+base_imgurl = lomoconf.wximg_base_url()
 db_host = lomoconf.db_host()
 db_usr = lomoconf.db_usr()
 db_pwd = lomoconf.db_pwd()
@@ -40,6 +40,7 @@ while True:
       # connect db for the first time
       if conn == None:
         conn=MySQLdb.connect(host=db_host, user=db_usr, passwd=db_pwd, db=db_name, port=db_port)
+        conn.autocommit(True)
   
       cur=conn.cursor()
       # query pictures to be printed
@@ -56,13 +57,14 @@ while True:
           download_cmd = "wget " + base_imgurl + pic + " -q -O " + printing_img
           os.system(download_cmd)
           # call java program to print image
-          print_cmd = "java PrintImage " + printing_img
+          print_cmd = "~/client/lomoprint.sh " + printing_img
           if words is not None: 
             print_cmd = print_cmd + " '" + words + "'"
           # print print_cmd
           print_result = subprocess.check_output(print_cmd, shell = True)
           # print "print result: " + print_result
           if print_result == "0": # successfully printed
+            # print "mark image printed..."
             cur.execute(upd_sql, [str(row_id)])
           time.sleep(pr_wait_sec)
       os.system(rm_printimg_cmd)

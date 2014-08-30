@@ -36,6 +36,9 @@ def machine_id():
 
 def img_base_url():
   return inst().getProp("img_base_url")
+
+def wximg_base_url():
+  return inst().getProp("wximg_base_url")
   
 def db_host():
   return inst().getProp("db_host")

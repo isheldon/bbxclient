@@ -9,7 +9,7 @@ public class WordPrinted {
 	
 	private String fontName = "方正静蕾简体";
 	
-	private int fontStyle =  Font.BOLD;
+	private int fontStyle =  Font.ITALIC;
 	
 	private int wordNumPerLine = 8;
 	
