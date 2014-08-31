@@ -6,6 +6,7 @@ class ImagePanel(wx.Panel):
          imagePath = None, defaultImage = None):
     wx.Panel.__init__(self, parent, pos = pos, size = size)
     self.size = size
+    self.SetBackgroundColour(wx.WHITE)
     self.animate = None
     self.imagePath = imagePath
     self.defaultImage = defaultImage
