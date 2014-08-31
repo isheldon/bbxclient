@@ -30,6 +30,8 @@ done
 # if there is any error, cancel job
 if [ $err -eq 1 ]; then
   cancel -a
+  cp -f /etc/lomotime/default/printerr.jpg /tmp/lomoprinting.jpg
+  sleep 10s
   echo -n "1"
   exit 1
 else
