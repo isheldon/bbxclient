@@ -45,6 +45,9 @@ class Frame(wx.Frame):
     # call soft board and network config
     self.Bind(wx.EVT_LEFT_UP, self.OnClick)
 
+    # show machine id
+    self.Bind(wx.EVT_RIGHT_UP, self.OnRightClick)
+
   def OnClick(self, event):
     pos = event.GetPosition()
     if pos.x >= 1911 and pos.y <= 100:
@@ -57,13 +60,25 @@ class Frame(wx.Frame):
       if result == wx.ID_OK:
         os.system("sudo halt -p")
 
-class OffDialog(wx.Dialog):
-    def __init__(self):
-        wx.Dialog.__init__(self, None, -1, '确定要关机吗？', size=(300, 50))
-        okButton = wx.Button(self, wx.ID_OK, "确定", pos=(15, 15))
-        okButton.SetDefault()
-        cancelButton = wx.Button(self, wx.ID_CANCEL, "取消", pos=(115, 15))
+  def OnRightClick(self, event):
+    pos = event.GetPosition()
+    if pos.x >= 1911 and pos.y <= 100:
+      win = MachineIdWin()
+      win.ShowModal()
+      win.Destroy()
 
+class OffDialog(wx.Dialog):
+  def __init__(self):
+    wx.Dialog.__init__(self, None, -1, '确定要关机吗？', size=(300, 50))
+    okButton = wx.Button(self, wx.ID_OK, "确定", pos=(15, 15))
+    okButton.SetDefault()
+    cancelButton = wx.Button(self, wx.ID_CANCEL, "取消", pos=(115, 15))
+
+class MachineIdWin(wx.Dialog):
+  def __init__(self):
+    wx.Dialog.__init__(self, None, -1, '机器码', size=(300, 50))
+    okButton = wx.Button(self, wx.ID_OK, lomoconf.machine_id())
+    okButton.SetDefault()
 
 if __name__ == '__main__':
   app = wx.App()
