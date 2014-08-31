@@ -62,6 +62,7 @@ class HtmlPanel(wx.Panel):
     self.html = HtmlWindow(self, pos=pos, size=size)
     self.html.SetEditable(False)
     self.html.LoadUrl(self.localUrl)
+    self.loadtime = 0
 
     # timer, check internet access
     self.htmltimer = wx.Timer(self)
@@ -74,7 +75,11 @@ class HtmlPanel(wx.Panel):
   def OnHtmlTimer(self, event):
     req = requests.get(self.checkUrl)
     if req.status_code == 200: # the internet connection is fine
+      # load remote url and stop the timer
       self.html.LoadUrl(self.remoteUrl)
+      if self.loadtime == 1:
+        self.htmltimer.Stop()
+      self.loadtime = self.loadtime + 1
     else:
       self.html.LoadUrl(self.localUrl)
 
