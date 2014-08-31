@@ -28,7 +28,7 @@ class Frame(wx.Frame):
     self.qrCodeImg.SetTimerInterval(lomoconf.qrcode_interval())
 
     # consumer code, pos: (1680, 450+200=650)
-    self.consumerCode = lomocode.CodePanel(self, pos = (1680, 650), size = (200, 50))
+    self.consumerCode = lomocode.CodePanel(self, pos = (1680, 650), size = (200, 45))
 
     # current printing image, pos: (1400, 400)
     self.printingImg = lomoimg.ImagePanel(self,
