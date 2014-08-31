@@ -49,3 +49,6 @@ left-alt + win + right-click
 
 * jdk
 apt-get install openjdk-6-jdk
+
+* printer config
+lpoptions -o PrintQuality=Photo
