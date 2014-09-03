@@ -10,25 +10,25 @@ class Frame(wx.Frame):
     self.Show()
     self.ShowFullScreen(True)
 
-    # HTML page, size: 1350*1080
-    lomohtml.HtmlPanel(self, pos = (0, 0), size = (1350, 1080))
+    # HTML page, size: 1370*1080
+    lomohtml.HtmlPanel(self, pos = (0, 0), size = (1370, 1080))
 
-    # background image, size: (1910-1350=560)*1080
+    # background image, size: (1910-1370=540)*1080
     self.bgrImg = lomoimg.ImagePanel(self,
-         pos = (1350, 0), size = (560, 1080),
+         pos = (1370, 0), size = (540, 1080),
          imagePath = "/etc/lomotime/background.jpg",
          defaultImage = "/etc/lomotime/default/background.jpg")
     self.bgrImg.SetTimerInterval(lomoconf.backgroupd_interval())
 
-    # QR code image, pos: (1666, 427)
+    # QR code image, pos: (1675, 427)
     self.qrCodeImg = lomoimg.ImagePanel(self,
-         pos = (1666, 427), size = (169, 166),
+         pos = (1675, 427), size = (163, 165),
          imagePath = "/etc/lomotime/qrcode.jpg",
          defaultImage = "/etc/lomotime/default/qrcode.jpg")
     self.qrCodeImg.SetTimerInterval(lomoconf.qrcode_interval())
 
-    # consumer code, pos: (1666, 427+166=593+2=595)
-    self.consumerCode = lomocode.CodePanel(self, pos = (1666, 595), size = (169, 25))
+    # consumer code, pos: (1675, 427+166=593+2=595)
+    self.consumerCode = lomocode.CodePanel(self, pos = (1675, 595), size = (163, 25))
 
     # current printing image, pos: (1400, 400)
     self.printingImg = lomoimg.ImagePanel(self,
