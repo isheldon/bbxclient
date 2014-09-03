@@ -105,9 +105,9 @@ public class GenerateImage {
 	 * 将图片进行剪接处理
 	 */
 	public String genPic(FileInputStream fis, String filename, boolean forPrint) throws Exception {
-		int wth = 660;
-		int hgt = 890;
-		int margin = 10;
+		int wth = 720;
+		int hgt = 950;
+		int margin = 40;
 		if (forPrint) {
 			wth = 1904;
 			hgt = 2694;
