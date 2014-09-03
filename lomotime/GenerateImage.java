@@ -123,7 +123,7 @@ public class GenerateImage {
 		g2d.setPaint (new Color (255, 255, 255));
 		g2d.fillRect (0, 0, wth, hgt);
 		// 将剪切后的图片画入上部
-		g2d.drawImage(biu, margin, margin, null);
+		g2d.drawImage(biu, margin, 30 + margin, null);
 		/*
 		 * 画入空白
 		 */
@@ -142,7 +142,8 @@ public class GenerateImage {
 			g2d.drawImage(createPic(), margin, cutLength + blank, null);
 			// 在文字和图片都有的情况下，将图片缩放在右侧
 			BufferedImage bil = changePicPx(bufferedImage, height, height);
-			g2d.drawImage(bil, cutLength - height, cutLength + blank, null);
+			//g2d.drawImage(bil, cutLength - height, cutLength + blank, null);
+			g2d.drawImage(bil, cutLength - height + margin, cutLength + blank, null);
 		} else if(wordPrinted != null && bufferedImage == null) {
 			g2d.drawImage(createPic(), margin, cutLength + blank, null);
 		} else if(wordPrinted == null && bufferedImage != null) {
@@ -254,9 +255,13 @@ public class GenerateImage {
 			int cutX = 0;
 			int cutY = 0;
 
-			WordPrinted pw = new WordPrinted();
-			pw.setFontColor(Color.BLACK);
-			pw.setWord(args[1]);
+			WordPrinted pw = null;
+			String words = args[1];
+			if (words.length() > 0) {
+				pw = new WordPrinted();
+				pw.setFontColor(Color.BLACK);
+				pw.setWord(words);
+			}
 
 			BufferedImage adimg = null;
 			if (args.length > 2) {
