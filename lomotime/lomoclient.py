@@ -20,15 +20,15 @@ class Frame(wx.Frame):
          defaultImage = "/etc/lomotime/default/background.jpg")
     self.bgrImg.SetTimerInterval(lomoconf.backgroupd_interval())
 
-    # QR code image, pos: (1680, 450)
+    # QR code image, pos: (1666, 427)
     self.qrCodeImg = lomoimg.ImagePanel(self,
-         pos = (1680, 450), size = (200, 200),
+         pos = (1666, 427), size = (169, 166),
          imagePath = "/etc/lomotime/qrcode.jpg",
          defaultImage = "/etc/lomotime/default/qrcode.jpg")
     self.qrCodeImg.SetTimerInterval(lomoconf.qrcode_interval())
 
-    # consumer code, pos: (1680, 450+200=650)
-    self.consumerCode = lomocode.CodePanel(self, pos = (1680, 650), size = (200, 45))
+    # consumer code, pos: (1666, 427+166=593+2=595)
+    self.consumerCode = lomocode.CodePanel(self, pos = (1666, 595), size = (169, 25))
 
     # current printing image, pos: (1400, 400)
     self.printingImg = lomoimg.ImagePanel(self,

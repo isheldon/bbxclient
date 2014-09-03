@@ -16,19 +16,21 @@ class CodePanel(wx.Panel):
     self.cctimer.Start(1000)
 
   def showConsumerCode(self):
-    self.clientCode = wx.StaticText(self, -1, "███████", (5, 0))
-    self.clientCode.SetFont(wx.Font(26, wx.SWISS, wx.NORMAL, wx.BOLD))
+    self.clientCode = wx.StaticText(self, -1, "███████", (0, 0))
+    self.clientCode.SetFont(wx.Font(20, wx.SWISS, wx.NORMAL, wx.BOLD))
     self.clientCode.SetForegroundColour(wx.WHITE)
     cCode = self.ccCache.get('ConsumerCode')
 
+    fontsize = 16
     if cCode != None:
       if len(cCode) > 4:
-        codetxt = cCode
+        codetxt = " " +  cCode
+        fontsize = 14
       else:
         codetxt = "  消费码:" + (cCode or "")
 
-      self.clientCode = wx.StaticText(self, -1, codetxt, (0,5))
-      self.clientCode.SetFont(wx.Font(18, wx.SWISS, wx.NORMAL, wx.BOLD))
+      self.clientCode = wx.StaticText(self, -1, codetxt, (0,0))
+      self.clientCode.SetFont(wx.Font(fontsize, wx.SWISS, wx.NORMAL, wx.BOLD))
       #self.clientCode.SetForegroundColour(wx.RED)
 
   def OnConsumerCodeTimer(self, event):
