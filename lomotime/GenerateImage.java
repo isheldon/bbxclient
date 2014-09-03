@@ -100,79 +100,35 @@ public class GenerateImage {
 		}
 	}
 
-	/**
-	 * 打印图片
-	 * 返回结果：0（成功），1（找不到打印机），2（打印机当前拒绝发送给它的任何作业）
-	 */
-	public int print(FileInputStream fis, ImageFormatter formatter) throws Exception {
-		/*
-		 * 检查校验打印机
-		 */
-		PrintService ps = PrintServiceLookup.lookupDefaultPrintService();
-		if(ps == null) {
-			return 1;
-		}
-		DocPrintJob dpj = ps.createPrintJob();
-		if(dpj.getPrintService().getAttribute(PrinterIsAcceptingJobs.class) != PrinterIsAcceptingJobs.ACCEPTING_JOBS) {
-			return 2;
-		}
-		/*
-		 * 设置打印属性
-		 */
-		HashDocAttributeSet has = new HashDocAttributeSet();
-		HashPrintRequestAttributeSet hpras = new HashPrintRequestAttributeSet();
-		hpras.add(PrintQuality.HIGH);
-		hpras.add(MediaSizeName.ISO_A4);
-		
-		/*
-		 * 定位在纸张的打印位置
-		 */
-		MediaPrintableArea mpap = new MediaPrintableArea(X, Y, LENGTH, HIGH, MediaPrintableArea.MM);
-		hpras.add(mpap);
-		
-		/*
-		 * 打印的图片格式
-		 */
-		DocFlavor df = null;
-		String fm = null;
-		if(formatter == ImageFormatter.JPEG) {
-			df = DocFlavor.INPUT_STREAM.JPEG;
-			fm = "jpg";
-		}
-		if(formatter == ImageFormatter.PNG) {
-			df = DocFlavor.INPUT_STREAM.PNG;
-			fm = "png";
-		}
-		// 获得新图片的输入流
-		FileInputStream fisn = new FileInputStream(handlePic(fis, fm));
-		// 创建打印文档图片
-		SimpleDoc doc = new SimpleDoc(fisn, df, has);
-		// 打印
-		dpj.print(doc, hpras);
-		fisn.close();
-		
-		return 0;
-	}
 	
 	/**
 	 * 将图片进行剪接处理
 	 */
-	public String handlePic(FileInputStream fis, String formatter) throws Exception {
+	public String genPic(FileInputStream fis, String filename, boolean forPrint) throws Exception {
+		int wth = 660;
+		int hgt = 890;
+		int margin = 10;
+		if (forPrint) {
+			wth = 1904;
+			hgt = 2694;
+			margin = 0;
+		}
+
 		// 剪切后的图片
-		BufferedImage biu = cutPic(fis, formatter);
+		BufferedImage biu = cutPic(fis, "jpg");
 		// 新图片
-		BufferedImage bin = new BufferedImage(1904, 2694, BufferedImage.TYPE_INT_RGB);
+		BufferedImage bin = new BufferedImage(wth, hgt, BufferedImage.TYPE_INT_RGB);
 		
 		Graphics2D g2d = (Graphics2D) bin.getGraphics();
 		g2d.setPaint (new Color (255, 255, 255));
-		g2d.fillRect (0, 0, 1904, 2694);
+		g2d.fillRect (0, 0, wth, hgt);
 		// 将剪切后的图片画入上部
-		g2d.drawImage(biu, 0, 0, null);
+		g2d.drawImage(biu, margin, margin, null);
 		/*
 		 * 画入空白
 		 */
 		g2d.setBackground(Color.WHITE);
-		g2d.clearRect(0, cutLength, cutLength, blank);
+		g2d.clearRect(0, cutLength, cutLength + margin, blank);
 		/*
 		 * 画入下部图片的背景
 		 */
@@ -183,22 +139,22 @@ public class GenerateImage {
 		 * 根据传入的参数决定文字和图片的打印
 		 */
 		if(wordPrinted != null && bufferedImage != null) {
-			g2d.drawImage(createPic(), 0, cutLength + blank, null);
+			g2d.drawImage(createPic(), margin, cutLength + blank, null);
 			// 在文字和图片都有的情况下，将图片缩放在右侧
 			BufferedImage bil = changePicPx(bufferedImage, height, height);
 			g2d.drawImage(bil, cutLength - height, cutLength + blank, null);
 		} else if(wordPrinted != null && bufferedImage == null) {
-			g2d.drawImage(createPic(), 0, cutLength + blank, null);
+			g2d.drawImage(createPic(), margin, cutLength + blank, null);
 		} else if(wordPrinted == null && bufferedImage != null) {
 			// 将图片缩放为合适尺寸
 			BufferedImage bil = changePicPx(bufferedImage, cutLength, height);
-			g2d.drawImage(bil, 0, cutLength + blank, null);
+			g2d.drawImage(bil, margin, cutLength + blank, null);
 		}
 
 		// 输出的新图片文件位置
-		String path = imagePath + formatter;
+		String path = "/tmp/" + filename;
 		FileOutputStream fos = new FileOutputStream(path);
-		ImageIO.write(bin, formatter, fos);
+		ImageIO.write(bin, "jpg", fos);
 		fis.close();
 		fos.close();
 		return path;
@@ -292,25 +248,31 @@ public class GenerateImage {
 		
 	}
 	
-	public static void main(String[] args) { //arg0: image path, arg1: words
+	public static void main(String[] args) { //arg0: image path, arg1: words, arg2: adimg
 		try {
 			int cutLength = 640;
 			int cutX = 0;
 			int cutY = 0;
-			WordPrinted pw = null;
-			if (args.length > 1) {
-				pw = new WordPrinted();
-				pw.setFontColor(Color.BLACK);
-				pw.setWord(args[1]);
+
+			WordPrinted pw = new WordPrinted();
+			pw.setFontColor(Color.BLACK);
+			pw.setWord(args[1]);
+
+			BufferedImage adimg = null;
+			if (args.length > 2) {
+				adimg = ImageIO.read(new FileInputStream(args[2]));
 			}
 			
 			// PrintImage pi = new PrintImage(cutX, cutY, cutLength, pw, null);
 			// pi.setBgColor(new Color(153, 102, 102));
 			// int result = pi.print(new FileInputStream(args[0]), ImageFormatter.JPEG);
 
-			GenerateImage gi = new GenerateImage(cutX, cutY, cutLength, pw, null);
+			GenerateImage gi = new GenerateImage(cutX, cutY, cutLength, pw, adimg);
 			gi.setBgColor(Color.WHITE);
-			gi.handlePic(new FileInputStream(args[0]), "jpg");
+			// generate image for printing
+			gi.genPic(new FileInputStream(args[0]), "999.jpg", true);
+			// generate image for display
+			gi.genPic(new FileInputStream(args[0]), "lomoprinting.jpg", false);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

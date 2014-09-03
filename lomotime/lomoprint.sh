@@ -5,8 +5,12 @@ words=$2
 
 cd ~/client
 # echo "image: $orig_img, words: $words"
-# generate image for printing, /tmp/999.jpg
-java GenerateImage ${orig_img} "${words}"
+# generate image for printing: /tmp/999.jpg; and image for display: /tmp/lomoprinting.jpg
+if [ -f /etc/lomotime/ad.jpg ]; then
+  java GenerateImage ${orig_img} "${words}" /etc/lomotime/ad.jpg
+else
+  java GenerateImage ${orig_img} "${words}"
+fi
 # use commandline tool (lpr) to print image
 lpr /tmp/999.jpg
 

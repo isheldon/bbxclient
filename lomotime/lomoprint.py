@@ -17,6 +17,7 @@ pr_wait_sec = lomoconf.current_print_interval()
 checkUrl = lomoconf.check_url()
 
 printing_img = "/tmp/lomoprinting.jpg"
+toprint_img = "/tmp/toprint.jpg"
 rm_printimg_cmd = "rm -f /tmp/lomoprinting.jpg"
 sel_sql = "select id, pic_path, content from weixin where machine_id = %s and consumer_code is not null and is_printed = 2"
 upd_sql = "update weixin set is_printed = 1 where id = %s"
@@ -53,11 +54,11 @@ while True:
         pic = row[1] # picture path
         words = row[2] # bottom side words of the photo
         if pic is not None: 
-          # using wget to download picture to /tmp/lomoprinting.jpg
-          download_cmd = "wget " + base_imgurl + pic + " -q -O " + printing_img
+          # using wget to download picture to /tmp/toprint.jpg
+          download_cmd = "wget " + base_imgurl + pic + " -q -O " + toprint_img
           os.system(download_cmd)
           # call java program to print image
-          print_cmd = "~/client/lomoprint.sh " + printing_img
+          print_cmd = "~/client/lomoprint.sh " + toprint_img
           if words is not None: 
             print_cmd = print_cmd + " '" + words + "'"
           # print print_cmd
