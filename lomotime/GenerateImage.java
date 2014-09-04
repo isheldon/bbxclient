@@ -113,6 +113,7 @@ public class GenerateImage {
 			hgt = 2694;
 			margin = 0;
 		}
+		int topMargin = 30;
 
 		// 剪切后的图片
 		BufferedImage biu = cutPic(fis, "jpg");
@@ -123,17 +124,17 @@ public class GenerateImage {
 		g2d.setPaint (new Color (255, 255, 255));
 		g2d.fillRect (0, 0, wth, hgt);
 		// 将剪切后的图片画入上部
-		g2d.drawImage(biu, margin, 30 + margin, null);
+		g2d.drawImage(biu, margin, topMargin + margin, null);
 		/*
 		 * 画入空白
 		 */
 		g2d.setBackground(Color.WHITE);
-		g2d.clearRect(0, cutLength, cutLength + margin, blank);
+		g2d.clearRect(0, topMargin + cutLength, cutLength + margin, blank);
 		/*
 		 * 画入下部图片的背景
 		 */
 		g2d.setBackground(bgColor);
-		g2d.clearRect(0, cutLength + blank, cutLength, height);
+		g2d.clearRect(0, topMargin + cutLength + blank, cutLength, height);
 		
 		/*
 		 * 根据传入的参数决定文字和图片的打印
