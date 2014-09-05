@@ -22,7 +22,7 @@ class Frame(wx.Frame):
 
     # QR code image, pos: (1675, 427)
     self.qrCodeImg = lomoimg.ImagePanel(self,
-         pos = (1675, 427), size = (163, 165),
+         pos = (1675, 427), size = (164, 165),
          imagePath = "/etc/lomotime/qrcode.jpg",
          defaultImage = "/etc/lomotime/default/qrcode.jpg")
     self.qrCodeImg.SetTimerInterval(lomoconf.qrcode_interval())

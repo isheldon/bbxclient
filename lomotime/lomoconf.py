@@ -73,6 +73,9 @@ def local_url():
 def remote_url():
   return inst().getProp("remote_url")
 
+def logo_url():
+  return inst().getProp("logo_url")
+
 def html_refresh_interval():
   return int(inst().getProp("html_refresh_interval"))
 

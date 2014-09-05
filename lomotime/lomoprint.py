@@ -7,6 +7,7 @@ import lomoconf
 # read from config file
 machine_id = lomoconf.machine_id()
 base_imgurl = lomoconf.wximg_base_url()
+logo_imgurl = lomoconf.logo_url()
 db_host = lomoconf.db_host()
 db_usr = lomoconf.db_usr()
 db_pwd = lomoconf.db_pwd()
@@ -37,10 +38,13 @@ while True:
       os.system(cp_offline_cmd)
 
     if is_network_ok:
+      # get logo picture
+      logo_cmd = "~/client/lomogetlogo.sh " + logo_imgurl
+      os.system(logo_cmd)
 
       # connect db for the first time
       if conn == None:
-        conn=MySQLdb.connect(host=db_host, user=db_usr, passwd=db_pwd, db=db_name, port=db_port)
+        conn=MySQLdb.connect(host=db_host, user=db_usr, passwd=db_pwd, db=db_name, port=db_port, charset="utf8")
         conn.autocommit(True)
   
       cur=conn.cursor()

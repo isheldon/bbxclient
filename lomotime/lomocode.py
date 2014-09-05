@@ -24,14 +24,14 @@ class CodePanel(wx.Panel):
     fontsize = 16
     if cCode != None:
       if len(cCode) > 4:
-        codetxt = " " +  cCode
+        codetxt = cCode
         fontsize = 14
       else:
-        codetxt = "  消费码:" + (cCode or "")
+        codetxt = " 消费码:" + (cCode or "")
 
-      self.clientCode = wx.StaticText(self, -1, codetxt, (0,0))
+      self.clientCode = wx.StaticText(self, -1, codetxt, (0,3))
       self.clientCode.SetFont(wx.Font(fontsize, wx.SWISS, wx.NORMAL, wx.BOLD))
-      #self.clientCode.SetForegroundColour(wx.RED)
+      self.clientCode.SetForegroundColour(wx.BLACK)
 
   def OnConsumerCodeTimer(self, event):
     self.showConsumerCode()

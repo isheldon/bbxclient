@@ -1,5 +1,6 @@
 img_base_url=http://www.lomoxtime.cn:8080/uploadImg/img/
 wximg_base_url=http://www.lomotime.cn:8080/uploadImg/wexinImg/
+logo_url=http://www.lomotime.cn:8080/uploadImg/logo.jpg
 db_host=xxxxx
 db_usr=xxxxxxxx
 db_pwd=xxxxxxx
