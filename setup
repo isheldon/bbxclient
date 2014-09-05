@@ -52,3 +52,14 @@ apt-get install openjdk-6-jdk
 
 * printer config
 lpoptions -o PrintQuality=Photo
+
+* font
+donwload xjlFont.ttf
+cd /usr/share/fonts
+mkdir xjl
+cd xjl
+cp xjlFont.ttf ./
+mkfontscale
+mkfontdir
+fc-cache
+# logout 
