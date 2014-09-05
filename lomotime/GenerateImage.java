@@ -93,9 +93,11 @@ public class GenerateImage {
 		this.bufferedImage = bufferedImage;
 		
 		if(wordPrinted != null && bufferedImage != null) {
+			wordPrinted.setWordNumPerLine(10);
 			wordPrinted.setFont(new Font(wordPrinted.getFontName(), wordPrinted.getFontStyle(), (int) ((cutLength - height) / wordPrinted.getWordNumPerLine() * WordPrinted.PER)));
 		}
 		if(wordPrinted != null && bufferedImage == null) {
+			wordPrinted.setWordNumPerLine(10);
 			wordPrinted.setFont(new Font(wordPrinted.getFontName(), wordPrinted.getFontStyle(), (int) (cutLength / wordPrinted.getWordNumPerLine() * WordPrinted.PER)));
 		}
 	}

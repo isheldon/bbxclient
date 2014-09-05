@@ -7,9 +7,10 @@ public class WordPrinted {
 
 	private Font font;
 	
-	private String fontName = "方正静蕾简体";
+	//private String fontName = "方正静蕾简体";
+	private String fontName = "FZJingLeiS-R-GB";
 	
-	private int fontStyle =  Font.ITALIC;
+	private int fontStyle =  Font.PLAIN;
 	
 	private int wordNumPerLine = 8;
 	
@@ -17,7 +18,8 @@ public class WordPrinted {
 	
 	private Color fontColor = Color.BLACK;
 	
-	public static final double PER = 0.90;
+	//public static final double PER = 0.90;
+	public static final double PER = 1.0;
 
 	public WordPrinted() {
 	}
