@@ -16,7 +16,7 @@ class CodePanel(wx.Panel):
     self.cctimer.Start(1000)
 
   def showConsumerCode(self):
-    self.clientCode = wx.StaticText(self, -1, "███████", (0, 0))
+    self.clientCode = wx.StaticText(self, -1, "████████████████", (0, 0))
     self.clientCode.SetFont(wx.Font(20, wx.SWISS, wx.NORMAL, wx.BOLD))
     self.clientCode.SetForegroundColour(wx.WHITE)
     cCode = self.ccCache.get('ConsumerCode')

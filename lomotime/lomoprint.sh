@@ -30,7 +30,7 @@ lpr /tmp/999.jpg
 # check print job queue,
 # if job not finished within 30 seconds, something wrong
 err=1
-for i in 1 2 3 4 5 6
+for i in 1 2 3 4
 do
   sleep 10s
   # check job count, 0 means job finished
@@ -48,9 +48,8 @@ done
 if [ $err -eq 1 ]; then
   cancel -a
   cp -f /etc/lomotime/default/printerr.jpg /tmp/lomoprinting.jpg
-  sleep 10s
   echo -n "1"
-  exit 1
+  exit 0
 else
   echo -n "0"
   exit 0

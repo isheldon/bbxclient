@@ -66,19 +66,32 @@ class Frame(wx.Frame):
       win = MachineIdWin()
       win.ShowModal()
       win.Destroy()
+    if pos.x >= 1911 and pos.y >= 980:
+      dialog = PrintResetDialog()
+      result = dialog.ShowModal()
+      dialog.Destroy()
+      if result == wx.ID_OK:
+        os.system("~/client/lomorestartprint.sh")
 
 class OffDialog(wx.Dialog):
   def __init__(self):
-    wx.Dialog.__init__(self, None, -1, '确定要关机吗？', size=(300, 50))
-    okButton = wx.Button(self, wx.ID_OK, "确定", pos=(15, 15))
-    okButton.SetDefault()
+    wx.Dialog.__init__(self, None, -1, '请选择您的操作', size=(250, 50))
+    okButton = wx.Button(self, wx.ID_OK, "关机", pos=(15, 15))
     cancelButton = wx.Button(self, wx.ID_CANCEL, "取消", pos=(115, 15))
+    cancelButton.SetDefault()
 
 class MachineIdWin(wx.Dialog):
   def __init__(self):
     wx.Dialog.__init__(self, None, -1, '机器码', size=(300, 50))
     okButton = wx.Button(self, wx.ID_OK, lomoconf.machine_id())
     okButton.SetDefault()
+
+class PrintResetDialog(wx.Dialog):
+  def __init__(self):
+    wx.Dialog.__init__(self, None, -1, '请选择您的操作', size=(250, 50))
+    okButton = wx.Button(self, wx.ID_OK, "打印复位", pos=(15, 15))
+    cancelButton = wx.Button(self, wx.ID_CANCEL, "取消", pos=(115, 15))
+    cancelButton.SetDefault()
 
 if __name__ == '__main__':
   app = wx.App()

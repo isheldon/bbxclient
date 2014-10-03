@@ -32,10 +32,10 @@ def get_pics():
         # print dimen_pic
         # print ad_pic
 
-        if dimen_pic != "null":
+        if dimen_pic != "null" and dimen_pic.endswith(".jpg"):
 	    cmd = "sudo wget " + dimen_pic + " -q -O /etc/lomotime/qrcode.jpg"
             os.system(cmd)
-        if ad_pic != "null":
+        if ad_pic != "null" and ad_pic.endswith(".jpg"):
 	    cmd = "sudo wget " + ad_pic + " -q -O /etc/lomotime/ad.jpg"
             os.system(cmd)
 

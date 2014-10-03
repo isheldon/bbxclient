@@ -7,8 +7,8 @@ public class WordPrinted {
 
 	private Font font;
 	
-	//private String fontName = "方正静蕾简体";
-	private String fontName = "FZJingLeiS-R-GB";
+	private String fontName = "方正静蕾简体";
+	//private String fontName = "FZJingLeiS-R-GB";
 	
 	private int fontStyle =  Font.PLAIN;
 	

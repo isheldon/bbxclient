@@ -93,11 +93,11 @@ public class GenerateImage {
 		this.bufferedImage = bufferedImage;
 		
 		if(wordPrinted != null && bufferedImage != null) {
-			wordPrinted.setWordNumPerLine(10);
-			wordPrinted.setFont(new Font(wordPrinted.getFontName(), wordPrinted.getFontStyle(), (int) ((cutLength - height) / wordPrinted.getWordNumPerLine() * WordPrinted.PER)));
+			wordPrinted.setWordNumPerLine(9);
+			wordPrinted.setFont(new Font(wordPrinted.getFontName(), wordPrinted.getFontStyle(), (int) ((cutLength - height) / wordPrinted.getWordNumPerLine() * WordPrinted.PER + 7)));
 		}
 		if(wordPrinted != null && bufferedImage == null) {
-			wordPrinted.setWordNumPerLine(10);
+			wordPrinted.setWordNumPerLine(9);
 			wordPrinted.setFont(new Font(wordPrinted.getFontName(), wordPrinted.getFontStyle(), (int) (cutLength / wordPrinted.getWordNumPerLine() * WordPrinted.PER)));
 		}
 	}
@@ -144,9 +144,13 @@ public class GenerateImage {
 		if(wordPrinted != null && bufferedImage != null) {
 			g2d.drawImage(createPic(), margin, cutLength + blank, null);
 			// 在文字和图片都有的情况下，将图片缩放在右侧
-			BufferedImage bil = changePicPx(bufferedImage, height, height);
+			// 减小图片尺寸
+			int smallHeight = height * 64 / 100;
+      int smallBlank = height - smallHeight;
+			//BufferedImage bil = changePicPx(bufferedImage, height, height);
+			BufferedImage bil = changePicPx(bufferedImage, smallHeight, smallHeight);
 			//g2d.drawImage(bil, cutLength - height, cutLength + blank, null);
-			g2d.drawImage(bil, cutLength - height + margin, cutLength + blank, null);
+			g2d.drawImage(bil, cutLength - smallHeight + margin, cutLength + blank + smallBlank, null);
 		} else if(wordPrinted != null && bufferedImage == null) {
 			g2d.drawImage(createPic(), margin, cutLength + blank, null);
 		} else if(wordPrinted == null && bufferedImage != null) {

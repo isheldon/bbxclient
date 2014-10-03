@@ -9,8 +9,8 @@ import gtk, gtk.gdk
 # pywebkitgtk (http://code.google.com/p/pywebkitgtk/)
 import webkit
 
-import wx, os, requests
-import lomoconf
+import wx, os
+import lomoconf, lomoutil
 
 class HtmlWindow(wx.Panel):
     def __init__(self, *args, **kwargs):
@@ -54,7 +54,6 @@ class HtmlPanel(wx.Panel):
     wx.Panel.__init__(self, parent, pos=pos, size=size)
 
     # read from config file 
-    self.checkUrl = lomoconf.check_url()
     self.localUrl = lomoconf.local_url()
     self.remoteUrl = lomoconf.remote_url() + "&machineCode=" + lomoconf.machine_id()
     # print self.remoteUrl
@@ -63,6 +62,7 @@ class HtmlPanel(wx.Panel):
     self.html.SetEditable(False)
     self.html.LoadUrl(self.localUrl)
     self.loadtime = 0
+    self.remoteon = False
 
     # timer, check internet access
     self.htmltimer = wx.Timer(self)
@@ -73,13 +73,15 @@ class HtmlPanel(wx.Panel):
 
 
   def OnHtmlTimer(self, event):
-    req = requests.get(self.checkUrl)
-    if req.status_code == 200: # the internet connection is fine
-      # load remote url and stop the timer
-      self.html.LoadUrl(self.remoteUrl)
-      if self.loadtime == 1:
-        self.htmltimer.Stop()
-      self.loadtime = self.loadtime + 1
+    if lomoutil.internet_on(): # the internet connection is fine
+      if not self.remoteon:
+        # load remote url and stop the timer
+        self.html.LoadUrl(self.remoteUrl)
+        if self.loadtime == 1:
+          self.remoteon = True
+        self.loadtime = self.loadtime + 1
     else:
       self.html.LoadUrl(self.localUrl)
+      self.remoteon = False
+      self.loadtime = 0
 

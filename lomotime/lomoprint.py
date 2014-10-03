@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import MySQLdb, os, subprocess, time, requests
-import lomoconf
+import lomoconf, lomoutil
 
 # read from config file
 machine_id = lomoconf.machine_id()
@@ -30,14 +30,11 @@ conn = None
 while True:
   try:
     # check network connection
-    is_network_ok = True
-    try:
-      requests.get(checkUrl)
-    except Exception, e: # the network is not fine
-      is_network_ok = False
+    is_network_ok = lomoutil.internet_on()
+    if not is_network_ok:
       os.system(cp_offline_cmd)
 
-    if is_network_ok:
+    else:
       # get logo picture
       logo_cmd = "~/client/lomogetlogo.sh " + logo_imgurl
       os.system(logo_cmd)
@@ -68,14 +65,19 @@ while True:
           # print print_cmd
           print_result = subprocess.check_output(print_cmd, shell = True)
           # print "print result: " + print_result
-          if print_result == "0": # successfully printed
-            # print "mark image printed..."
-            cur.execute(upd_sql, [str(row_id)])
+          if print_result == "0":
+            # successfully printed, mark image printed, but check network first
+            if lomoutil.internet_on():
+              cur.execute(upd_sql, [str(row_id)])
+          else:
+            # cancel this time of printing
+            time.sleep(600)
+            break
           time.sleep(pr_wait_sec)
       os.system(rm_printimg_cmd)
       cur.close()
   except Exception, e:
-    print e
+    # print e
     os.system(rm_printimg_cmd)
   time.sleep(wait_sec)
 # end wihle
