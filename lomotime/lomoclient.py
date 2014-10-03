@@ -10,8 +10,37 @@ class Frame(wx.Frame):
     self.Show()
     self.ShowFullScreen(True)
 
-    # HTML page, size: 1370*1080
-    lomohtml.HtmlPanel(self, pos = (0, 0), size = (1370, 1080))
+    #lomohtml.HtmlPanel(self, pos = (0, 0), size = (1370, 1080))
+    # left side, a main image and 3 small images (1370, 1080)
+    self.leftMainImg = lomoimg.ImagePanel(self,
+         pos = (0, 0), size = (1370, 785),
+         imagePath = "/etc/lomotime/leftmain.jpg",
+         defaultImage = "/etc/lomotime/default/leftmain.jpg")
+    self.leftMainImg.indexed = True
+    self.leftMainImg.SetTimerInterval(5)
+
+    self.leftBgImg = lomoimg.ImagePanel(self,
+         pos = (0, 785), size = (1370, 295),
+         imagePath = "/etc/lomotime/leftbg.jpg",
+         defaultImage = "/etc/lomotime/default/leftbg.jpg")
+    self.leftBgImg.StopTimer()
+
+    self.left1Img = lomoimg.ImagePanel(self,
+         pos = (5, 795), size = (450, 285),
+         imagePath = "/etc/lomotime/left1.jpg",
+         defaultImage = "/etc/lomotime/default/left1.jpg")
+    self.left1Img.SetTimerInterval(15)
+    self.left2Img = lomoimg.ImagePanel(self,
+         pos = (460, 795), size = (450, 285),
+         imagePath = "/etc/lomotime/left2.jpg",
+         defaultImage = "/etc/lomotime/default/left2.jpg")
+    self.left2Img.SetTimerInterval(15)
+    self.left3Img = lomoimg.ImagePanel(self,
+         pos = (915, 795), size = (450, 285),
+         imagePath = "/etc/lomotime/left3.jpg",
+         defaultImage = "/etc/lomotime/default/left3.jpg")
+    self.left3Img.SetTimerInterval(15)
+
 
     # background image, size: (1910-1370=540)*1080
     self.bgrImg = lomoimg.ImagePanel(self,

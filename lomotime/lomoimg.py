@@ -10,6 +10,10 @@ class ImagePanel(wx.Panel):
     self.animate = None
     self.imagePath = imagePath
     self.defaultImage = defaultImage
+
+    self.indexed = False
+    self.currentIndex = 1;
+
     self.LoadImage()
     # timer, refresh the image
     self.timer = wx.Timer(self)
@@ -18,6 +22,16 @@ class ImagePanel(wx.Panel):
 
   def LoadImage(self):
     theImg = self.imagePath
+    if self.indexed:
+      indexImg = theImg + str(self.currentIndex)
+      if os.path.isfile(indexImg):
+        theImg = indexImg
+        self.currentIndex = self.currentIndex + 1
+      else:
+        if self.currentIndex > 1:
+          theImg = theImg + "1"
+        self.currentIndex = 1
+
     if theImg == None or (not os.path.isfile(theImg)):
       theImg = self.defaultImage
       if self.animate != None:
@@ -39,6 +53,9 @@ class ImagePanel(wx.Panel):
 
   def OnTimer(self, event):
     self.LoadImage()
+
+  def StopTimer(self):
+    self.timer.Stop()
 
   def SetAnimate(self, animate):
     self.animate = animate
