@@ -55,6 +55,9 @@ while True:
         pic = row[1] # picture path
         words = row[2] # bottom side words of the photo
         if pic is not None: 
+          # check internet connection before download
+          if not lomoutil.internet_on():
+            break;
           # using wget to download picture to /tmp/toprint.jpg
           download_cmd = "wget " + base_imgurl + pic + " -q -O " + toprint_img
           os.system(download_cmd)
