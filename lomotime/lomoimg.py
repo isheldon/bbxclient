@@ -24,6 +24,7 @@ class ImagePanel(wx.Panel):
   def LoadImage(self):
     theImg = self.imagePath
     if self.indexed:
+      #print "image index: " + str(self.currentIndex) #debug
       indexImg = theImg + str(self.currentIndex)
       if os.path.isfile(indexImg):
         theImg = indexImg
@@ -31,7 +32,7 @@ class ImagePanel(wx.Panel):
       else:
         if self.currentIndex > 1:
           theImg = theImg + "1"
-        self.currentIndex = 1
+        self.currentIndex = 2
 
     if theImg == None or (not os.path.isfile(theImg)):
       theImg = self.defaultImage
