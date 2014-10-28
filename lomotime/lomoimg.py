@@ -1,5 +1,5 @@
 import wx, wx.animate
-import os.path
+import os.path, imghdr
 
 class ImagePanel(wx.Panel):
   def __init__(self, parent, pos = wx.DefaultPosition, size = wx.DefaultSize,
@@ -12,8 +12,9 @@ class ImagePanel(wx.Panel):
     self.defaultImage = defaultImage
 
     self.indexed = False
-    self.currentIndex = 1;
+    self.currentIndex = 1
 
+    self.bmp = None
     self.LoadImage()
     # timer, refresh the image
     self.timer = wx.Timer(self)
@@ -40,10 +41,12 @@ class ImagePanel(wx.Panel):
       if self.animate != None:
         self.animate.Play()
 
-    image = wx.Image(theImg, wx.BITMAP_TYPE_JPEG)  
-    image.Rescale(self.size[0], self.size[1])
-    self.bmp = wx.StaticBitmap(parent=self, bitmap=image.ConvertToBitmap())  
-    
+    if (imghdr.what(theImg) == "jpeg"): # only lod JPEG image
+      image = wx.Image(theImg, wx.BITMAP_TYPE_JPEG)  
+      image.Rescale(self.size[0], self.size[1])
+      if (self.bmp != None):
+        self.bmp.Destroy()
+      self.bmp = wx.StaticBitmap(parent=self, bitmap=image.ConvertToBitmap())  
 
   def SetImagePath(self, imagePath = None):
     self.imagePath = imagePath

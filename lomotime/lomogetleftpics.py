@@ -22,7 +22,7 @@ while True:
       req = requests.get(main_img_url)
       if req.status_code == 200:
         download_cmd = "wget " + main_img_url + " -q -O /etc/lomotime/leftmain.jpg" + i
-        print download_cmd
+        # print download_cmd
         os.system(download_cmd)
 
     # download the left small images
@@ -32,7 +32,7 @@ while True:
       req = requests.get(small_img_url)
       if req.status_code == 200:
         download_cmd = "wget " + small_img_url + " -q -O /etc/lomotime/left" + i + ".jpg"
-        print download_cmd
+        # print download_cmd
         os.system(download_cmd)
 
     # exit loop

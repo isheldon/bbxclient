@@ -1,3 +1,5 @@
+import base64
+
 class LomoConfig:
 
   def __init__(self):
@@ -32,7 +34,8 @@ def inst():
     return instance
 
 def machine_id():
-  return inst().getProp("machine_id")
+  encoded = inst().getProp("machine_id")
+  return base64.decodestring(encoded + "\n")
 
 def img_base_url():
   return inst().getProp("img_base_url")
@@ -44,19 +47,24 @@ def leftimg_base_url():
   return inst().getProp("leftimg_base_url")
   
 def db_host():
-  return inst().getProp("db_host")
+  encoded = inst().getProp("db_host")
+  return base64.decodestring(encoded + "=\n")
   
 def db_usr():
-  return inst().getProp("db_usr")
+  encoded = inst().getProp("db_usr")
+  return base64.decodestring(encoded + "3\n")
   
 def db_pwd():
-  return inst().getProp("db_pwd")
+  encoded = inst().getProp("db_pwd")
+  return base64.decodestring(encoded + "4\n")
   
 def db_name():
-  return inst().getProp("db_name")
+  encoded = inst().getProp("db_name")
+  return base64.decodestring(encoded + "==\n")
   
 def db_port():
-  return int(inst().getProp("db_port"))
+  encoded = inst().getProp("db_port")
+  return int(base64.decodestring(encoded + "==\n"))
 
 def info_url():
   return inst().getProp("info_url")

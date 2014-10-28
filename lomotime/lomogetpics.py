@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import requests, json, os, time
-import lomoconf
+import lomoconf, lomoutil
 
 # read from config file
 machine_id = lomoconf.machine_id()
@@ -12,6 +12,7 @@ adargs = {"method": "getAD", "machineCode": machine_id}
 interval = lomoconf.qrcode_interval()
 
 def get_pics():
+    download_ok = True
     # get background picture
     req = requests.get(infurl, params = bgargs)
     if req.status_code == 200:
@@ -22,6 +23,8 @@ def get_pics():
         if back_pic != "null":
 	    cmd = "sudo wget " + base_imgurl + back_pic + " -q -O /etc/lomotime/background.jpg"
             os.system(cmd)
+    else:
+        download_ok = False
 
     req = requests.get(infurl, params = adargs)
     if req.status_code == 200:
@@ -38,10 +41,17 @@ def get_pics():
         if ad_pic != "null" and ad_pic.endswith(".jpg"):
 	    cmd = "sudo wget " + ad_pic + " -q -O /etc/lomotime/ad.jpg"
             os.system(cmd)
+    else:
+        download_ok = False
+
+    return download_ok
 
 while True:
+  if lomoutil.internet_on():
     try:
-      get_pics()
+      result_ok = get_pics()
+      if result_ok:
+        break
     except Exception, e:
       # ignore 
       print ""

@@ -30,9 +30,9 @@ lpr /tmp/999.jpg
 # check print job queue,
 # if job not finished within 30 seconds, something wrong
 err=1
-for i in 1 2 3 4
+for i in {1..35}
 do
-  sleep 10s
+  sleep 1s
   # check job count, 0 means job finished
   job=`lpstat | wc -l`
   # echo "try ${i}, job=${job}"
