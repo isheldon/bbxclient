@@ -48,6 +48,8 @@ def get_pics():
 
 while True:
   if lomoutil.internet_on():
+    # first, delete old images
+    os.system("rm -f /etc/lomotime/background.jpg /etc/lomotime/qrcode.jpg /etc/lomotime/ad.jpg")
     try:
       result_ok = get_pics()
       if result_ok:
