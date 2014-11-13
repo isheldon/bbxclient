@@ -106,7 +106,7 @@ public class GenerateImage {
 	/**
 	 * 将图片进行剪接处理
 	 */
-	public String genPic(FileInputStream fis, String filename, boolean forPrint) throws Exception {
+	public String genPic(FileInputStream fis, String filename, boolean forPrint, boolean isBig) throws Exception {
 		int wth = 720;
 		int hgt = 950;
 		int margin = 40;
@@ -114,11 +114,14 @@ public class GenerateImage {
 			wth = 1904;
 			hgt = 2694;
 			margin = 0;
+			if (isBig) { margin = 10; }
+		} else {
+			cutLength = 640;
 		}
 		int topMargin = 30;
 
 		// 剪切后的图片
-		BufferedImage biu = cutPic(fis, "jpg");
+		BufferedImage biu = changePicPx(ImageIO.read(fis), cutLength, cutLength);
 		// 新图片
 		BufferedImage bin = new BufferedImage(wth, hgt, BufferedImage.TYPE_INT_RGB);
 		
@@ -256,14 +259,17 @@ public class GenerateImage {
 		
 	}
 	
-	public static void main(String[] args) { //arg0: image path, arg1: words, arg2: adimg
+	public static void main(String[] args) { //arg0: big_or_small arg1:image path, arg2: words, arg3: adimg
 		try {
+			String size = args[0];
+			boolean isBig = "B".equals(size);
 			int cutLength = 640;
+			if (isBig) { cutLength = 768; }
 			int cutX = 0;
 			int cutY = 0;
 
 			WordPrinted pw = null;
-			String words = args[1];
+			String words = args[2];
 			if (words.length() > 0) {
 				pw = new WordPrinted();
 				pw.setFontColor(Color.BLACK);
@@ -271,8 +277,8 @@ public class GenerateImage {
 			}
 
 			BufferedImage adimg = null;
-			if (args.length > 2) {
-				adimg = ImageIO.read(new FileInputStream(args[2]));
+			if (args.length > 3) {
+				adimg = ImageIO.read(new FileInputStream(args[3]));
 			}
 			
 			// PrintImage pi = new PrintImage(cutX, cutY, cutLength, pw, null);
@@ -282,9 +288,9 @@ public class GenerateImage {
 			GenerateImage gi = new GenerateImage(cutX, cutY, cutLength, pw, adimg);
 			gi.setBgColor(Color.WHITE);
 			// generate image for printing
-			gi.genPic(new FileInputStream(args[0]), "999.jpg", true);
+			gi.genPic(new FileInputStream(args[1]), "999.jpg", true, isBig);
 			// generate image for display
-			gi.genPic(new FileInputStream(args[0]), "lomoprinting.jpg", false);
+			gi.genPic(new FileInputStream(args[1]), "lomoprinting.jpg", false, isBig);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

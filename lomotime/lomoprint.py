@@ -21,10 +21,12 @@ checkUrl = lomoconf.check_url()
 printing_img = "/tmp/lomoprinting.jpg"
 toprint_img = "/tmp/toprint.jpg"
 rm_printimg_cmd = "rm -f /tmp/lomoprinting.jpg"
+size_sql = "select picSize from machine where machine_id = " + machine_id
 sel_sql = "select id, pic_path, content from weixin where machine_id = %s and consumer_code is not null and is_printed = 2"
 upd_sql = "update weixin set is_printed = 1 where id = %s"
 cp_offline_cmd = "cp /etc/lomotime/default/offline.jpg " + printing_img
 
+big_or_small = None
 logo_downloaded = False
 printed = []
 
@@ -34,7 +36,7 @@ conn = None
 while True:
   try:
 
-    #print "begin loop: " + time.ctime() # debug
+    # print "begin loop: " + time.ctime() # debug
 
     # check network connection
     is_network_ok = lomoutil.internet_on()
@@ -53,6 +55,17 @@ while True:
       if conn == None:
         conn=MySQLdb.connect(host=db_host, user=db_usr, passwd=db_pwd, db=db_name, port=db_port, charset="utf8")
         conn.autocommit(True)
+
+      # get pic size
+      if big_or_small == None:
+        cur = conn.cursor()
+        cur.execute(size_sql)
+        size = cur.fetchone() 
+        if size[0] == None or "1" == size[0]:
+          big_or_small = "S"
+        else:
+          big_or_small = "B"
+        # print big_or_small # debug
 
       #print "db connected: " + time.ctime() # debug
   
@@ -79,12 +92,12 @@ while True:
 
           #print "to run lomoprint.sh: " + time.ctime() # debug
 
-          print_cmd = "~/client/lomoprint.sh " + toprint_img
+          print_cmd = "~/client/lomoprint.sh " + big_or_small + " " + toprint_img
           if words is not None: 
             print_cmd = print_cmd + " '" + words + "'"
-          # print print_cmd
+          # print print_cmd # debug
           print_result = subprocess.check_output(print_cmd, shell = True)
-          # print "print result: " + print_result
+          # print "print result: " + print_result # debug
 
           #print "print finished: " + time.ctime() # debug
 
@@ -105,7 +118,7 @@ while True:
       os.system(rm_printimg_cmd)
       cur.close()
   except Exception, e:
-    # print e
+    # print e debug
     os.system(rm_printimg_cmd)
   time.sleep(wait_sec)
 # end wihle

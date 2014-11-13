@@ -1,7 +1,8 @@
 #!/bin/bash
 
-orig_img=$1
-words=$2
+big_or_small=$1
+orig_img=$2
+words=$3
 
 cd ~/client
 # echo "image: $orig_img, words: $words"
@@ -9,18 +10,18 @@ cd ~/client
 if [ -z $words ]; then
   # no words
   if [ -f /etc/lomotime/ad.jpg ]; then
-    java GenerateImage ${orig_img} "" /etc/lomotime/ad.jpg
+    java GenerateImage ${big_or_small} ${orig_img} "" /etc/lomotime/ad.jpg
   elif [ -f /etc/lomotime/logo.jpg ]; then
-    java GenerateImage ${orig_img} "" /etc/lomotime/logo.jpg
+    java GenerateImage ${big_or_small} ${orig_img} "" /etc/lomotime/logo.jpg
   else
-    java GenerateImage ${orig_img} ""
+    java GenerateImage ${big_or_small} ${orig_img} ""
   fi
 else
   # there's words
   if [ -f /etc/lomotime/logo.jpg ]; then
-    java GenerateImage ${orig_img} "${words}" /etc/lomotime/logo.jpg
+    java GenerateImage ${big_or_small} ${orig_img} "${words}" /etc/lomotime/logo.jpg
   else
-    java GenerateImage ${orig_img} "${words}"
+    java GenerateImage ${big_or_small} ${orig_img} "${words}"
   fi
 fi
 
@@ -29,8 +30,12 @@ lpr /tmp/999.jpg
 
 # check print job queue,
 # if job not finished within 30 seconds, something wrong
+count=35
+if [ "${big_or_small}" == "B" ]; then
+  count=50
+fi
 err=1
-for i in {1..35}
+for i in $(seq "${count}")
 do
   sleep 1s
   # check job count, 0 means job finished
