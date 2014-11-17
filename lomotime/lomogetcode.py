@@ -3,6 +3,10 @@
 
 import memcache, requests, time
 import lomoconf
+import sys
+
+reload(sys)
+sys.setdefaultencoding( "utf-8" )
 
 # read from config file
 machine_id = lomoconf.machine_id()
@@ -16,7 +20,7 @@ def get_consumer_code():
     req = requests.get(info_url, params = args)
     if req.status_code == 200:
         shared.set('ConsumerCode', req.text)
-        # print req.text
+        print req.text
 
 while True:
     try:

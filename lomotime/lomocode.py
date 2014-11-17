@@ -1,6 +1,10 @@
 # -*- coding: utf-8 -*-
 
 import wx, memcache
+import sys
+
+reload(sys)
+sys.setdefaultencoding( "utf-8" )
 
 class CodePanel(wx.Panel):
   def __init__(self, parent, pos = wx.DefaultPosition, size = wx.DefaultSize):
