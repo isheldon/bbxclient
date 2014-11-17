@@ -28,6 +28,8 @@ fi
 # use commandline tool (lpr) to print image
 lpr /tmp/999.jpg
 
+mv -f /tmp/lomoprintingtmp.jpg /tmp/lomoprinting.jpg
+
 # check print job queue,
 # if job not finished within 30 seconds, something wrong
 count=35
@@ -48,11 +50,15 @@ do
   fi
 done
 
+rm -f /tmp/999.jpg
+rm -f /tmp/toprint.jpg
+
 # echo "err: ${err}"
 # if there is any error, cancel job
 if [ $err -eq 1 ]; then
   cancel -a
-  cp -f /etc/lomotime/default/printerr.jpg /tmp/lomoprinting.jpg
+  cp -f /etc/lomotime/default/printerr.jpg /tmp/lomoprintingtmp.jpg
+  mv -f /tmp/lomoprintingtmp.jpg /tmp/lomoprinting.jpg
   echo -n "1"
   exit 0
 else

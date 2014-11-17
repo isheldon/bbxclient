@@ -290,7 +290,7 @@ public class GenerateImage {
 			// generate image for printing
 			gi.genPic(new FileInputStream(args[1]), "999.jpg", true, isBig);
 			// generate image for display
-			gi.genPic(new FileInputStream(args[1]), "lomoprinting.jpg", false, isBig);
+			gi.genPic(new FileInputStream(args[1]), "lomoprintingtmp.jpg", false, isBig);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
