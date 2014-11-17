@@ -1,9 +1,10 @@
-import requests, lomoconf
+import socket, lomoconf
 
 def internet_on():
   try:
-    requests.get(lomoconf.check_url(), timeout = 2)
+    socket.create_connection((lomoconf.check_url(), 80), 5)
     return True
   except Exception, e:
-    return False
+    pass
+  return False
 

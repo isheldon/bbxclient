@@ -47,9 +47,10 @@ while True:
       # get logo picture
       if not logo_downloaded:
         logo_cmd = "~/client/lomogetlogo.sh " + logo_imgurl
-        os.system(logo_cmd)
-        logo_downloaded = True
-        #print "got logo image: " + time.ctime() # debug
+        logo_result = subprocess.check_output(logo_cmd, shell = True)
+        if logo_result != "0":
+          logo_downloaded = True
+          #print "got logo image: " + time.ctime() # debug
 
       # connect db for the first time
       if conn == None:
@@ -85,10 +86,15 @@ while True:
           # check internet connection before download
           if not lomoutil.internet_on():
             break;
-          # using wget to download picture to /tmp/toprint.jpg
-          download_cmd = "wget " + base_imgurl + pic + " -q -O " + toprint_img
-          os.system(download_cmd)
-          # call java program to print image
+          # download picture to /tmp/toprint.jpg
+          #download_cmd = "wget " + base_imgurl + pic + " -q -O " + toprint_img
+          download_cmd = "~/client/lomodownload.sh " + base_imgurl + pic + " tmptoprint.jpg " + toprint_img
+          # print download_cmd
+          download_result = subprocess.check_output(download_cmd, shell = True)
+          # print download_result
+          if download_result != "0":
+            # download failed, go to next picture
+            continue
 
           #print "to run lomoprint.sh: " + time.ctime() # debug
 
@@ -118,7 +124,7 @@ while True:
       os.system(rm_printimg_cmd)
       cur.close()
   except Exception, e:
-    # print e debug
+    print e # debug
     os.system(rm_printimg_cmd)
   time.sleep(wait_sec)
 # end wihle

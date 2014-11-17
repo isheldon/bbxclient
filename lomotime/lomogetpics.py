@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import requests, json, os, time
+import requests, json, os, time, subprocess
 import lomoconf, lomoutil
 
 # read from config file
@@ -21,8 +21,12 @@ def get_pics():
         back_pic = jpic["backPic"]
 
         if back_pic != "null":
-	    cmd = "sudo wget " + base_imgurl + back_pic + " -q -O /etc/lomotime/background.jpg"
-            os.system(cmd)
+          cmd = "~/client/lomodownload.sh " + base_imgurl + back_pic + " lomobg.jpg " + "/etc/lomotime/background.jpg"
+          # print "download cmd: " + cmd
+          download_result = subprocess.check_output(cmd, shell = True)
+          # print download_result
+          if download_result != "0":
+            download_ok = False
     else:
         download_ok = False
 
@@ -36,11 +40,20 @@ def get_pics():
         # print ad_pic
 
         if dimen_pic != "null" and dimen_pic.endswith(".jpg"):
-	    cmd = "sudo wget " + dimen_pic + " -q -O /etc/lomotime/qrcode.jpg"
-            os.system(cmd)
+          cmd = "~/client/lomodownload.sh " + dimen_pic + " lomoqrcode.jpg " + "/etc/lomotime/qrcode.jpg"
+          # print "download cmd: " + cmd
+          download_result = subprocess.check_output(cmd, shell = True)
+          # print download_result
+          if download_result != "0":
+            download_ok = False
+
         if ad_pic != "null" and ad_pic.endswith(".jpg"):
-	    cmd = "sudo wget " + ad_pic + " -q -O /etc/lomotime/ad.jpg"
-            os.system(cmd)
+          cmd = "~/client/lomodownload.sh " + ad_pic + " lomoad.jpg " + "/etc/lomotime/ad.jpg"
+          # print "download cmd: " + cmd
+          download_result = subprocess.check_output(cmd, shell = True)
+          # print download_result
+          if download_result != "0":
+            download_ok = False
     else:
         download_ok = False
 
@@ -56,6 +69,6 @@ while True:
         break
     except Exception, e:
       # ignore 
-      print ""
+      pass
     time.sleep(interval)
 
