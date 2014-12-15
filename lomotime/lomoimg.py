@@ -15,7 +15,11 @@ class ImagePanel(wx.Panel):
     self.currentIndex = 1
 
     self.bmp = None
-    self.LoadImage()
+    try:
+      self.LoadImage()
+    except Exception, e:
+      pass
+      # print e # debug
     # timer, refresh the image
     self.timer = wx.Timer(self)
     self.Bind(wx.EVT_TIMER, self.OnTimer, self.timer)
