@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import wx, os
+import wx, os, subprocess
 import lomoimg, lomocode, lomoconf
 
 class Frame(wx.Frame):
@@ -92,6 +92,21 @@ class Frame(wx.Frame):
         os.system("sudo reboot")
       elif result == 112:
         os.system("~/client/lomorestartprint.sh")
+      elif result == 113:
+        upgrade_cmd = "~/client/lomoupgrade.sh " + lomoconf.upgrade_url()
+        upgrade_result = subprocess.check_output(upgrade_cmd, shell = True)
+        print "upgrade result: " + upgrade_result # debug
+        if upgrade_result == "100":
+          upgradeMsg = "No new version"
+        elif upgrade_result == "200":
+          upgradeMsg = "Upgrade OK, please reboot"
+        elif upgrade_result == "1":
+          upgradeMsg = "Failed to download upgrade package, please try again later."
+        else:
+          upgradeMsg = "Failed to upgrade, please try again later."
+        win = UpgradeWin(upgradeMsg)
+        win.ShowModal()
+        win.Destroy()
 
   def OnRightClick(self, event):
     pos = event.GetPosition()
@@ -99,27 +114,25 @@ class Frame(wx.Frame):
       win = MachineIdWin()
       win.ShowModal()
       win.Destroy()
-    #if pos.x >= 1911 and pos.y >= 980:
-      #dialog = PrintResetDialog()
-      #result = dialog.ShowModal()
-      #dialog.Destroy()
-      #if result == wx.ID_OK:
-        #os.system("~/client/lomorestartprint.sh")
 
 class OffDialog(wx.Dialog):
   def __init__(self):
-    wx.Dialog.__init__(self, None, -1, '请选择您的操作', size=(420, 50))
+    wx.Dialog.__init__(self, None, -1, '请选择您的操作', size=(520, 50))
     okButton = wx.Button(self, wx.ID_OK, "关机", pos=(15, 15))
     rebootButton = wx.Button(self, 111, "重启", pos=(115, 15))
     rebootButton.Bind(wx.EVT_LEFT_UP, self.OnReboot)
     printButton = wx.Button(self, 112, "打印复位", pos=(215, 15))
     printButton.Bind(wx.EVT_LEFT_UP, self.OnPrint)
-    cancelButton = wx.Button(self, wx.ID_CANCEL, "取消", pos=(315, 15))
+    upgradeButton = wx.Button(self, 113, "Upgrade", pos=(315, 15))
+    upgradeButton.Bind(wx.EVT_LEFT_UP, self.OnUpgrade)
+    cancelButton = wx.Button(self, wx.ID_CANCEL, "取消", pos=(415, 15))
     cancelButton.SetDefault()
   def OnReboot(self, event):
     self.EndModal(111)
   def OnPrint(self, event):
     self.EndModal(112)
+  def OnUpgrade(self, event):
+    self.EndModal(113)
 
 class MachineIdWin(wx.Dialog):
   def __init__(self):
@@ -133,6 +146,15 @@ class PrintResetDialog(wx.Dialog):
     okButton = wx.Button(self, wx.ID_OK, "打印复位", pos=(15, 15))
     cancelButton = wx.Button(self, wx.ID_CANCEL, "取消", pos=(115, 15))
     cancelButton.SetDefault()
+
+class UpgradeWin(wx.Dialog):
+  def __init__(self, upgradeMsg):
+    wx.Dialog.__init__(self, None, -1, "Upgrade Result", size=(300, 80))
+    info = wx.StaticText(self, -1, upgradeMsg, (5,5))
+    info.SetFont(wx.Font(12, wx.SWISS, wx.NORMAL, wx.BOLD))
+    info.SetForegroundColour(wx.BLACK)
+    okButton = wx.Button(self, wx.ID_OK, "OK", pos=(100, 45))
+    okButton.SetDefault()
 
 if __name__ == '__main__':
   app = wx.App()

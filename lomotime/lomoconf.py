@@ -99,3 +99,6 @@ def current_print_interval():
 def qrcode_interval():
   return int(inst().getProp("qrcode_interval"))
 
+def upgrade_url():
+  return inst().getProp("upgrade_url")
+
