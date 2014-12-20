@@ -4,6 +4,7 @@ base_url=$1
 
 # clear new version folder, in case
 rm -rf ~/client.new
+rm -rf ~/client.bak
 # create working folder
 mkdir -p /tmp/lomo
 cd /tmp/lomo
