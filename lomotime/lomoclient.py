@@ -97,13 +97,13 @@ class Frame(wx.Frame):
         upgrade_result = subprocess.check_output(upgrade_cmd, shell = True)
         print "upgrade result: " + upgrade_result # debug
         if upgrade_result == "100":
-          upgradeMsg = "No new version"
+          upgradeMsg = "没有新版本"
         elif upgrade_result == "200":
-          upgradeMsg = "Upgrade OK, please reboot"
+          upgradeMsg = "升级成功，请重启"
         elif upgrade_result == "1":
-          upgradeMsg = "Failed to download upgrade package, please try again later."
+          upgradeMsg = "下载升级包失败，请稍后重试"
         else:
-          upgradeMsg = "Failed to upgrade, please try again later."
+          upgradeMsg = "升级失败，请稍后重试"
         win = UpgradeWin(upgradeMsg)
         win.ShowModal()
         win.Destroy()
@@ -123,7 +123,7 @@ class OffDialog(wx.Dialog):
     rebootButton.Bind(wx.EVT_LEFT_UP, self.OnReboot)
     printButton = wx.Button(self, 112, "打印复位", pos=(215, 15))
     printButton.Bind(wx.EVT_LEFT_UP, self.OnPrint)
-    upgradeButton = wx.Button(self, 113, "Upgrade", pos=(315, 15))
+    upgradeButton = wx.Button(self, 113, "系统更新", pos=(315, 15))
     upgradeButton.Bind(wx.EVT_LEFT_UP, self.OnUpgrade)
     cancelButton = wx.Button(self, wx.ID_CANCEL, "取消", pos=(415, 15))
     cancelButton.SetDefault()
@@ -149,7 +149,7 @@ class PrintResetDialog(wx.Dialog):
 
 class UpgradeWin(wx.Dialog):
   def __init__(self, upgradeMsg):
-    wx.Dialog.__init__(self, None, -1, "Upgrade Result", size=(300, 80))
+    wx.Dialog.__init__(self, None, -1, "升级结果", size=(300, 80))
     info = wx.StaticText(self, -1, upgradeMsg, (5,5))
     info.SetFont(wx.Font(12, wx.SWISS, wx.NORMAL, wx.BOLD))
     info.SetForegroundColour(wx.BLACK)

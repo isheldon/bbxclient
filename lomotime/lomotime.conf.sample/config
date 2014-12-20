@@ -17,4 +17,4 @@ check_url=http://www.lomoxtime.cn/
 local_url=file:///etc/lomoxtime/default/main.html
 remote_url=http://www.lomoxtime.cn:8080/lomo/mims/reg.do?method@@initGetMachinePic
 html_refresh_interval=30
-upgrade_url=http://localhost/lomotimepkg/
+upgrade_url=http://122.225.105.20/lomotimepkg/
