@@ -47,6 +47,7 @@ while True:
         row_id = image["id"] # row id, for later use after printing
         pic = image["picPath"] # picture path
         words = image["content"] # bottom side words of the photo
+        is_win = image["isWin"] # lucky
         if words == "null":
           words = None
         pic_size = image["picSize"] # 1-small 2-big
@@ -71,7 +72,7 @@ while True:
             continue
 
           #print "to run lomoprint.sh: " + time.ctime() # debug
-          print_cmd = "~/client/lomoprint.sh " + big_or_small + " " + toprint_img
+          print_cmd = "~/client/lomoprint.sh " + big_or_small + " " + toprint_img + " " + is_win
           if words is not None: 
             print_cmd = print_cmd + " '" + words + "'"
           print print_cmd # debug

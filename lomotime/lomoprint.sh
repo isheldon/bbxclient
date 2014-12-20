@@ -2,7 +2,8 @@
 
 big_or_small=$1
 orig_img=$2
-words=$3
+is_win=$3
+words=$4
 
 cd ~/client
 # echo "image: $orig_img, words: $words"
@@ -18,10 +19,14 @@ if [ -z $words ]; then
   fi
 else
   # there's words
-  if [ -f /etc/lomotime/logo.jpg ]; then
-    java GenerateImage ${big_or_small} ${orig_img} "${words}" /etc/lomotime/logo.jpg
-  else
+  if [ "${is_win}" == "1" ]; then
     java GenerateImage ${big_or_small} ${orig_img} "${words}"
+  else
+    if [ -f /etc/lomotime/logo.jpg ]; then
+      java GenerateImage ${big_or_small} ${orig_img} "${words}" /etc/lomotime/logo.jpg
+    else
+      java GenerateImage ${big_or_small} ${orig_img} "${words}"
+    fi
   fi
 fi
 
