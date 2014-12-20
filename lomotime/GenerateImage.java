@@ -114,7 +114,7 @@ public class GenerateImage {
 			wth = 1904;
 			hgt = 2694;
 			margin = 0;
-			//if (isBig) { margin = 10; }
+			//if (isBig) { margin = 10; } BIG
 		} else {
 			cutLength = 640;
 		}
@@ -263,8 +263,8 @@ public class GenerateImage {
 		try {
 			String size = args[0];
 			boolean isBig = "B".equals(size);
-			int cutLength = 630;
-			if (isBig) { cutLength = 760; }
+			int cutLength = 635;
+			if (isBig) { cutLength = 758; }
 			int cutX = 0;
 			int cutY = 0;
 
