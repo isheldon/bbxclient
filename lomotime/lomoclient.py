@@ -92,40 +92,38 @@ class Frame(wx.Frame):
         os.system("sudo reboot")
       elif result == 112:
         os.system("~/client/lomorestartprint.sh")
-      elif result == 113:
+
+  def OnRightClick(self, event):
+    pos = event.GetPosition()
+    if pos.x >= 1911 and pos.y <= 100:
+      win = MachineIdWin()
+      result = win.ShowModal()
+      if result == wx.ID_OK:
         upgrade_cmd = "~/client/lomoupgrade.sh " + lomoconf.upgrade_url()
         upgrade_result = subprocess.check_output(upgrade_cmd, shell = True)
         print "upgrade result: " + upgrade_result # debug
         if upgrade_result == "100":
-          upgradeMsg = "没有新版本"
+          upgradeMsg = "当前已是最新版本"
         elif upgrade_result == "200":
           upgradeMsg = "升级成功，请重启"
         elif upgrade_result == "1":
           upgradeMsg = "下载升级包失败，请稍后重试"
         else:
           upgradeMsg = "升级失败，请稍后重试"
-        win = UpgradeWin(upgradeMsg)
-        win.ShowModal()
-        win.Destroy()
-
-  def OnRightClick(self, event):
-    pos = event.GetPosition()
-    if pos.x >= 1911 and pos.y <= 100:
-      win = MachineIdWin()
-      win.ShowModal()
+        upgradeWin = UpgradeWin(upgradeMsg)
+        upgradeWin.ShowModal()
+        upgradeWin.Destroy()
       win.Destroy()
 
 class OffDialog(wx.Dialog):
   def __init__(self):
-    wx.Dialog.__init__(self, None, -1, '请选择您的操作', size=(520, 50))
+    wx.Dialog.__init__(self, None, -1, '请选择您的操作', size=(420, 50))
     okButton = wx.Button(self, wx.ID_OK, "关机", pos=(15, 15))
     rebootButton = wx.Button(self, 111, "重启", pos=(115, 15))
     rebootButton.Bind(wx.EVT_LEFT_UP, self.OnReboot)
     printButton = wx.Button(self, 112, "打印复位", pos=(215, 15))
     printButton.Bind(wx.EVT_LEFT_UP, self.OnPrint)
-    upgradeButton = wx.Button(self, 113, "系统更新", pos=(315, 15))
-    upgradeButton.Bind(wx.EVT_LEFT_UP, self.OnUpgrade)
-    cancelButton = wx.Button(self, wx.ID_CANCEL, "取消", pos=(415, 15))
+    cancelButton = wx.Button(self, wx.ID_CANCEL, "取消", pos=(315, 15))
     cancelButton.SetDefault()
   def OnReboot(self, event):
     self.EndModal(111)
@@ -136,12 +134,18 @@ class OffDialog(wx.Dialog):
 
 class MachineIdWin(wx.Dialog):
   def __init__(self):
-    wx.Dialog.__init__(self, None, -1, '机器码', size=(300, 50))
-    okButton = wx.Button(self, wx.ID_OK, lomoconf.machine_id())
-    okButton.SetDefault()
+    wx.Dialog.__init__(self, None, -1, '系统信息', size=(300, 100))
+    machineId = wx.StaticText(self, -1, '机器码: ' + lomoconf.machine_id(), (5,5))
+    machineId.SetFont(wx.Font(12, wx.SWISS, wx.NORMAL, wx.BOLD))
+    ver_txt = subprocess.check_output("cat ~/client/VER", shell = True)
+    version = wx.StaticText(self, -1, '版本: ' + ver_txt, (5,35))
+    version.SetFont(wx.Font(12, wx.SWISS, wx.NORMAL, wx.BOLD))
+    okButton = wx.Button(self, wx.ID_OK, "系统升级", pos=(5, 65))
+    cancelButton = wx.Button(self, wx.ID_CANCEL, "取消", pos=(100, 65))
+    cancelButton.SetDefault()
 
 class PrintResetDialog(wx.Dialog):
-  def __init__(self):
+ def __init__(self):
     wx.Dialog.__init__(self, None, -1, '请选择您的操作', size=(250, 50))
     okButton = wx.Button(self, wx.ID_OK, "打印复位", pos=(15, 15))
     cancelButton = wx.Button(self, wx.ID_CANCEL, "取消", pos=(115, 15))
