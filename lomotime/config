@@ -1,0 +1,15 @@
+img_base_url=http://122.225.105.51/uploadImg/img/
+wximg_base_url=http://122.225.105.51/uploadImg/wexinImg/
+logo_url=http://122.225.105.51/uploadImg/logo.jpg
+info_url=http://122.225.105.51/admin/mims/reg.do
+print_interval=5
+consumer_code_interval=3
+backgroupd_interval=15
+qrcode_interval=15
+current_print_interval=2
+check_url=122.225.105.51
+local_url=file:///etc/lomotime/default/main.html
+remote_url=http://122.225.105.51/lomo/mims/reg.do?method@@initGetMachinePic
+html_refresh_interval=15
+leftimg_base_url=http://122.225.105.51/lomo/machinepic/img/
+upgrade_url=http://122.225.105.20/lomotimepkg/

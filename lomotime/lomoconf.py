@@ -1,9 +1,9 @@
-import base64
+import base64, os
 
 class LomoConfig:
 
   def __init__(self):
-    prop_file = open("/etc/lomotime/config", 'r')
+    prop_file = open(os.path.join(os.path.expanduser("~"), "client/config"), 'r')
     try:
       self.props = {}
       for line in prop_file:
