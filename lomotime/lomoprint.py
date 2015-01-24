@@ -20,6 +20,7 @@ list_args = {"method": "getBackPicList", "machineCode": machine_id}
 
 printing_img = "/tmp/lomoprinting.jpg"
 toprint_img = "/tmp/toprint.jpg"
+voice_qrcode_img = "/tmp/weixinvoiceqrcode.jpg"
 rm_printimg_cmd = "rm -f /tmp/lomoprinting.jpg"
 cp_offline_cmd = "cp /etc/lomotime/default/offline.jpg " + printing_img
 
@@ -55,6 +56,19 @@ while True:
           big_or_small = "S"
         else:
           big_or_small = "B"
+        card_type = image["cardType"] # 9-voice
+        if "9" == card_type:
+          words = "扫一扫, 听声音"
+          voice_qrcode_todownload = "http://122.225.105.51/weixinvoice/" + image["voiceQrcodeImg"]
+          # download voice qrcode image to /tmp/weixinvoiceqrcode.jpg
+          download_wxvoice_cmd = "~/client/lomodownload.sh " + voice_qrcode_todownload + " tmpwxvoiceqrcode.jpg " + voice_qrcode_img
+          print download_wxvoice_cmd
+          download_wxvoice_result = subprocess.check_output(download_wxvoice_cmd, shell = True)
+          print "result: " +  download_wxvoice_result
+          if download_wxvoice_result != "0":
+            # download failed, go to next picture
+            continue
+
 
         if pic is not None: 
           if pic in printed: # if already printed, skip it
@@ -75,6 +89,8 @@ while True:
           print_cmd = "~/client/lomoprint.sh " + big_or_small + " " + toprint_img + " " + is_win
           if words is not None: 
             print_cmd = print_cmd + " '" + words + "'"
+          if "9" == card_type:
+            print_cmd = print_cmd + " " + voice_qrcode_img
           print print_cmd # debug
           print_result = subprocess.check_output(print_cmd, shell = True)
           print "print result: " + print_result # debug

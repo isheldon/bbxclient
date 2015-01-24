@@ -106,7 +106,7 @@ public class GenerateImage {
 	/**
 	 * 将图片进行剪接处理
 	 */
-	public String genPic(FileInputStream fis, String filename, boolean forPrint, boolean isBig) throws Exception {
+	public String genPic(FileInputStream fis, String filename, boolean forPrint, boolean isBig, String adLocation) throws Exception {
 		int wth = 720;
 		int hgt = 950;
 		int margin = 40;
@@ -114,7 +114,6 @@ public class GenerateImage {
 			wth = 1904;
 			hgt = 2694;
 			margin = 0;
-			//if (isBig) { margin = 10; } BIG
 		} else {
 			cutLength = 640;
 		}
@@ -145,15 +144,25 @@ public class GenerateImage {
 		 * 根据传入的参数决定文字和图片的打印
 		 */
 		if(wordPrinted != null && bufferedImage != null) {
-			g2d.drawImage(createPic(), margin, cutLength + blank, null);
+			int smallHeight = height * 64 / 100;
+      		int smallBlank = height - smallHeight;
+			if ("RIGHT".equals(adLocation) || !forPrint) {
+			    g2d.drawImage(createPic(), margin, cutLength + blank, null);
+			} else {
+			    g2d.drawImage(createPic(), margin + cutLength/15, cutLength + blank + cutLength/15, null);
+			}
 			// 在文字和图片都有的情况下，将图片缩放在右侧
 			// 减小图片尺寸
-			int smallHeight = height * 64 / 100;
-      int smallBlank = height - smallHeight;
 			//BufferedImage bil = changePicPx(bufferedImage, height, height);
-			BufferedImage bil = changePicPx(bufferedImage, smallHeight, smallHeight);
 			//g2d.drawImage(bil, cutLength - height, cutLength + blank, null);
-			g2d.drawImage(bil, cutLength - smallHeight + margin, cutLength + blank + smallBlank, null);
+			if ("RIGHT".equals(adLocation)) {
+				BufferedImage bil = changePicPx(bufferedImage, smallHeight, smallHeight);
+				g2d.drawImage(bil, cutLength - smallHeight + margin, cutLength + blank + smallBlank, null);
+			} else {
+				smallHeight = (int)(smallHeight*1.5);
+				BufferedImage bil = changePicPx(bufferedImage, smallHeight, smallHeight);
+				g2d.drawImage(bil, cutLength - smallHeight + margin, cutLength + blank, null);
+			}
 		} else if(wordPrinted != null && bufferedImage == null) {
 			g2d.drawImage(createPic(), margin, cutLength + blank, null);
 		} else if(wordPrinted == null && bufferedImage != null) {
@@ -259,7 +268,7 @@ public class GenerateImage {
 		
 	}
 	
-	public static void main(String[] args) { //arg0: big_or_small arg1:image path, arg2: words, arg3: adimg
+	public static void main(String[] args) { //arg0: big_or_small arg1:image path, arg2: words, arg3: adimg, arg4: adLocation
 		try {
 			String size = args[0];
 			boolean isBig = "B".equals(size);
@@ -277,8 +286,12 @@ public class GenerateImage {
 			}
 
 			BufferedImage adimg = null;
+			String adLocation = "RIGHT";
 			if (args.length > 3) {
 				adimg = ImageIO.read(new FileInputStream(args[3]));
+			}
+			if (args.length > 4) {
+			    adLocation = args[4];
 			}
 			
 			// PrintImage pi = new PrintImage(cutX, cutY, cutLength, pw, null);
@@ -288,9 +301,9 @@ public class GenerateImage {
 			GenerateImage gi = new GenerateImage(cutX, cutY, cutLength, pw, adimg);
 			gi.setBgColor(Color.WHITE);
 			// generate image for printing
-			gi.genPic(new FileInputStream(args[1]), "999.jpg", true, isBig);
+			gi.genPic(new FileInputStream(args[1]), "999.jpg", true, isBig, adLocation);
 			// generate image for display
-			gi.genPic(new FileInputStream(args[1]), "lomoprintingtmp.jpg", false, isBig);
+			gi.genPic(new FileInputStream(args[1]), "lomoprintingtmp.jpg", false, isBig, adLocation);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

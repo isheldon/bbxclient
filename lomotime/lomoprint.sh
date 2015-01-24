@@ -4,11 +4,12 @@ big_or_small=$1
 orig_img=$2
 is_win=$3
 words=$4
+voice_qrcode_img=$5
 
 cd ~/client
 # echo "image: $orig_img, words: $words"
 # generate image for printing: /tmp/999.jpg; and image for display: /tmp/lomoprinting.jpg
-if [ -z $words ]; then
+if [ -z "$words" ]; then
   # no words
   if [ -f /etc/lomotime/ad.jpg ]; then
     java GenerateImage ${big_or_small} ${orig_img} "" /etc/lomotime/ad.jpg
@@ -22,10 +23,15 @@ else
   if [ "${is_win}" == "1" ]; then
     java GenerateImage ${big_or_small} ${orig_img} "${words}"
   else
-    if [ -f /etc/lomotime/logo.jpg ]; then
-      java GenerateImage ${big_or_small} ${orig_img} "${words}" /etc/lomotime/logo.jpg
+    if [ ! -z "${voice_qrcode_img}" ]; then
+      # this is a voice card
+      java GenerateImage ${big_or_small} ${orig_img} "${words}" ${voice_qrcode_img} LEFT
     else
-      java GenerateImage ${big_or_small} ${orig_img} "${words}"
+      if [ -f /etc/lomotime/logo.jpg ]; then
+        java GenerateImage ${big_or_small} ${orig_img} "${words}" /etc/lomotime/logo.jpg
+      else
+        java GenerateImage ${big_or_small} ${orig_img} "${words}"
+      fi
     fi
   fi
 fi
